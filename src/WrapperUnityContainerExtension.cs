@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using Microsoft.Practices.Unity;
 
-namespace HastyAPI.FreshBooks.Wrapper
+namespace Vooban.FreshBooks.DotNet.Api
 {
     public class WrapperUnityContainerExtension : UnityContainerExtension
     {
@@ -9,7 +9,7 @@ namespace HastyAPI.FreshBooks.Wrapper
         {
             var freshbooksUsername = ConfigurationManager.AppSettings["FreshbooksUsername"];
             var freshbooksApiToken = ConfigurationManager.AppSettings["FreshbooksApiToken"];
-            var freshbooksInstance = new FreshBooks(freshbooksUsername, freshbooksApiToken);
+            var freshbooksInstance = new HastyAPI.FreshBooks.FreshBooks(freshbooksUsername, freshbooksApiToken);
 
             Container.RegisterInstance(freshbooksInstance, new ContainerControlledLifetimeManager());
         }

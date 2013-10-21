@@ -7,11 +7,11 @@
     <ProjectGuid>{530FE159-C5C2-43FE-B56B-0E96BF7F4422}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HastyAPI.FreshBooks.Wrapper.Tests</RootNamespace>
-    <AssemblyName>HastyAPI.FreshBooks.Wrapper.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Vooban.FreshBooks.DotNet.Api.Tests</RootNamespace>
+    <AssemblyName>Vooban.FreshBooks.DotNet.Api.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\HastyAPI.FreshBooks.Wrapper\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,6 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HastyAPI">
+      <HintPath>..\packages\HastyAPI.1.0.10.0\lib\net40\HastyAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="HastyAPI.FreshBooks">
+      <HintPath>..\packages\HastyFreshBooks.1.0.2.0\lib\net40\HastyAPI.FreshBooks.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +49,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit">
-      <HintPath>..\HastyAPI.FreshBooks.Wrapper\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -51,13 +60,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HastyAPI.FreshBooks.Wrapper\HastyAPI.FreshBooks.Wrapper.csproj">
+    <ProjectReference Include="..\src\Vooban.FreshBooks.DotNet.Api.csproj">
       <Project>{C5289539-9360-476C-9A7E-862124C40612}</Project>
-      <Name>HastyAPI.FreshBooks.Wrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\modules\HastyAPI.FreshBooks\HastyAPI.FreshBooks.csproj">
-      <Project>{623504ac-bc28-43bd-a1de-fed5272e8dbb}</Project>
-      <Name>HastyAPI.FreshBooks</Name>
+      <Name>Vooban.FreshBooks.DotNet.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

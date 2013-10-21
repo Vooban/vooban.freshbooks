@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using HastyAPI.FreshBooks.Wrapper.Models;
+using HastyAPI;
+using Vooban.FreshBooks.DotNet.Api.Models;
 
-namespace HastyAPI.FreshBooks.Wrapper
+namespace Vooban.FreshBooks.DotNet.Api
 {
     static class FreshbooksConvert
     {

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using HastyAPI.FreshBooks.Wrapper.Models;
+using Vooban.FreshBooks.DotNet.Api.Models;
 
-namespace HastyAPI.FreshBooks.Wrapper
+namespace Vooban.FreshBooks.DotNet.Api
 {
     public class StaffApi
     {
         private const string COMMAND_STAFF_LIST = "staff.list";
 
-        private readonly Lazy<FreshBooks> _freshbooks;
+        private readonly Lazy<HastyAPI.FreshBooks.FreshBooks> _freshbooks;
 
-        public StaffApi(Lazy<FreshBooks> freshbooks)
+        public StaffApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
         {
             _freshbooks = freshbooks;
         }

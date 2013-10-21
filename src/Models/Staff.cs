@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HastyAPI.FreshBooks.Wrapper.Models
+namespace Vooban.FreshBooks.DotNet.Api.Models
 {
     /// <summary>
     /// Here is the Freshbooks staff response

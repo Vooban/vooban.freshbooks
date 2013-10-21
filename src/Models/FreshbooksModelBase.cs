@@ -1,4 +1,4 @@
-﻿namespace HastyAPI.FreshBooks.Wrapper.Models
+﻿namespace Vooban.FreshBooks.DotNet.Api.Models
 {
     public class FreshbooksModelBase
     {

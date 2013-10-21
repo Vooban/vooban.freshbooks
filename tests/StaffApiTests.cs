@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace HastyAPI.FreshBooks.Wrapper.Tests
+namespace Vooban.FreshBooks.DotNet.Api.Tests
 {    
     public class StaffApiTests
     {
         [Fact]
         public void GetAll_Works_AsExpected()
         {
-            var freshbooks = new Lazy<FreshBooks>(() => new FreshBooks("", ""));
+            var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks("", ""));
             
             var testedClass = new StaffApi(freshbooks);
 
