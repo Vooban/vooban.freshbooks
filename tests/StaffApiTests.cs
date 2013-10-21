@@ -12,7 +12,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
             
             var testedClass = new StaffApi(freshbooks);
 
-            var result = testedClass.GetMultiple();
+            var result = testedClass.CallGetList();
             Assert.Equal(1, result.TotalItems);
         }
     }

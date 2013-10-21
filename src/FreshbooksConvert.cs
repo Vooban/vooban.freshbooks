@@ -7,8 +7,16 @@ using Vooban.FreshBooks.DotNet.Api.Models;
 
 namespace Vooban.FreshBooks.DotNet.Api
 {
+    /// <summary>
+    /// Helper class to facilitate conversion from Freshbooks to the .NET world
+    /// </summary>
     static class FreshbooksConvert
     {
+        /// <summary>
+        /// Converts the string value representing a boolean in Freshbooks to a real <c>boolean</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks value, which is 1 for <c>true</c> and 0 for <c>false</c>.</param>
+        /// <returns>The boolean value corresponding to the Freshbooks string</returns>
         public static bool ToBoolean(string value)
         {
             return !string.IsNullOrEmpty(value) && value == "1";
@@ -60,6 +68,13 @@ namespace Vooban.FreshBooks.DotNet.Api
             }
 
             return null;
+        }
+
+        public static FreshbooksResponse<T> ToResponse<T>(dynamic value)
+        {
+            return new FreshbooksResponse<T> {
+                Status = value.response.status == "ok"
+            };
         }
 
         public static FreshbooksPagedResponse ToPagedResponse(dynamic value)

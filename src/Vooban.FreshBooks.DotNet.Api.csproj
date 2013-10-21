@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Models\FreshbooksPagedResponse.cs" />
     <Compile Include="Models\FreshbooksResponse.cs" />
+    <Compile Include="SimplifiedStaffApi.cs" />
     <Compile Include="StaffApi.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Staff.cs" />

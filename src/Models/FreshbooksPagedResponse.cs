@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Vooban.FreshBooks.DotNet.Api.Models
 {
@@ -17,13 +18,14 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
             Status = inner.Status;
         }
 
-        internal FreshbooksPagedResponse()
-        { }
+        public FreshbooksPagedResponse(){}
     }
 
     public class FreshbooksPagedResponse<T> : FreshbooksPagedResponse
     {
         public IEnumerable<T> Result { get; set; }
+
+        public FreshbooksPagedResponse() {}
 
         public FreshbooksPagedResponse(FreshbooksPagedResponse inner) : base(inner)
         {
@@ -31,6 +33,18 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
             ItemPerPage = inner.ItemPerPage;
             TotalPages = inner.TotalPages;
             TotalItems = inner.TotalItems;
+        }
+
+        public FreshbooksPagedResponse<T> WithResult(Func<IEnumerable<T>> resultBuilder)
+        {
+            Result = resultBuilder();
+            return this;
+        }
+
+        public FreshbooksPagedResponse<T> WithResult(IEnumerable<T> result)
+        {
+            Result = result;
+            return this;
         }
     }
 }
