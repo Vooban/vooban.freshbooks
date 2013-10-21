@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using HastyAPI;
@@ -19,7 +21,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>The boolean value corresponding to the Freshbooks string</returns>
         public static bool ToBoolean(string value)
         {
-            return !string.IsNullOrEmpty(value) && value == "1";
+            return !string.IsNullOrWhiteSpace(value) && value == "1";
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>The double value corresponding to the Freshbooks string</returns>
         public static double? ToDouble(string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 return Convert.ToDouble(value, CultureInfo.InvariantCulture);
             }
@@ -42,10 +44,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// </summary>
         /// <param name="value">The Freshbooks string value.</param>
         /// <returns>The integer value corresponding to the Freshbooks object</returns>
-        public static int ToInt32(object value)
+        public static int? ToInt32(object value)
         {
             if (value == null)
-                throw new InvalidOperationException("value cannot be null");
+                return null;
 
             return ToInt32(value.ToString());
         }
@@ -55,14 +57,14 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// </summary>
         /// <param name="value">The Freshbooks string value.</param>
         /// <returns>The integer value corresponding to the Freshbooks string.</returns>
-        public static int ToInt32(string value)
+        public static int? ToInt32(string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 return Convert.ToInt32(value, CultureInfo.InvariantCulture);
             }
 
-            throw new InvalidOperationException("value cannot be null or empty");
+            return null;
         }
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>The date value corresponding to the Freshbooks object</returns>
         public static DateTime? ToDateTime(string value)
         {
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 return DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             }
@@ -104,6 +106,9 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>The prepolulated response status</returns>
         public static FreshbooksGetResponse<T> ToResponse<T>(dynamic value)
         {
+            if (value == null)
+                return null;
+
             return new FreshbooksGetResponse<T> {
                 Status = value.response.status == "ok"
             };
@@ -127,13 +132,18 @@ namespace Vooban.FreshBooks.DotNet.Api
                 {
                     var pagingInfo = new Dictionary<string, object>(innerResponse);
 
+                    var page = ToInt32(pagingInfo["page"]);
+                    var itemPerPage = ToInt32(pagingInfo["per_page"]);
+                    var totalPages = ToInt32(pagingInfo["pages"]);
+                    var totalItems = ToInt32(pagingInfo["total"]);
+
                     return new FreshbooksPagedResponse
                     {
                         Status = value.response.status == "ok",
-                        Page = ToInt32(pagingInfo["page"]),
-                        ItemPerPage = ToInt32(pagingInfo["per_page"]),
-                        TotalPages = ToInt32(pagingInfo["pages"]),
-                        TotalItems = ToInt32(pagingInfo["total"])
+                        Page = page.HasValue ? page.Value : 1,
+                        ItemPerPage = itemPerPage.HasValue ? itemPerPage.Value : 100,
+                        TotalPages = totalPages.HasValue ? totalPages.Value : 1,
+                        TotalItems = totalItems.HasValue ? totalItems.Value : 0
                     };
                 }
             }
@@ -154,5 +164,14 @@ namespace Vooban.FreshBooks.DotNet.Api
             return new FreshbooksPagedResponse<T>(ToPagedResponse(value));           
         }
 
+        public static dynamic ToDynamic(this object value)
+        {
+            IDictionary<string, object> expando = new ExpandoObject();
+
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(value.GetType()))
+                expando.Add(property.Name, property.GetValue(value));
+
+            return expando as ExpandoObject;
+        }
     }
 }
