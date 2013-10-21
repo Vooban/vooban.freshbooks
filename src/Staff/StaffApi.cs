@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
+using Vooban.FreshBooks.DotNet.Api.Staff.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace Vooban.FreshBooks.DotNet.Api.Staff
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.
@@ -55,14 +56,14 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <summary>
         /// Call the <c>staff.current</c> method on the Freshbooks API.
         /// </summary>
-        /// <returns>The <see cref="Staff"/> information of the client used to communicate with Freshbooks</returns>
-        public FreshbooksResponse<Staff> CallGetCurrent()
+        /// <returns>The <see cref="StaffModel"/> information of the client used to communicate with Freshbooks</returns>
+        public FreshbooksGetResponse<StaffModel> CallGetCurrent()
         {
             var currentStaffMember = _freshbooks.Value.Call(COMMAND_STAFF_CURRENT);
 
-            var response = FreshbooksConvert.ToResponse<Staff>(currentStaffMember);
+            var response = FreshbooksConvert.ToResponse<StaffModel>(currentStaffMember);
 
-            return (FreshbooksResponse<Staff>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
+            return (FreshbooksGetResponse<StaffModel>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
         }
 
         /// <summary>
@@ -70,15 +71,15 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// </summary>
         /// <param name="staffId">The staff id that you want to get information for.</param>
         /// <returns>
-        /// The <see cref="Staff" /> information for the specified <paramref name="staffId" />
+        /// The <see cref="StaffModel" /> information for the specified <paramref name="staffId" />
         /// </returns>
-        public FreshbooksResponse<Staff> CallGet(string staffId)
+        public FreshbooksGetResponse<StaffModel> CallGet(string staffId)
         {
             var currentStaffMember = _freshbooks.Value.Call(COMMAND_STAFF_GET, p => p.staff_id = staffId);
 
-            var response = FreshbooksConvert.ToResponse<Staff>(currentStaffMember);
+            var response = FreshbooksConvert.ToResponse<StaffModel>(currentStaffMember);
 
-            return (FreshbooksResponse<Staff>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
+            return (FreshbooksGetResponse<StaffModel>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
         }
 
         /// <summary>
@@ -87,14 +88,14 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <param name="page">The page you want to get.</param>
         /// <param name="itemPerPage">The number of item per page to get.</param>
         /// <returns>
-        /// The whole <see cref="FreshbooksPagedResponse{Staff}" /> containing paging information and result for the requested page.
+        /// The whole <see cref="FreshbooksPagedResponse{StaffModel}" /> containing paging information and result for the requested page.
         /// </returns>
         /// <exception cref="System.ArgumentException">
         /// Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage
         /// </exception>
-        public FreshbooksPagedResponse<Staff> CallGetList(int page = 1, int itemPerPage = 100)
+        public FreshbooksPagedResponse<StaffModel> CallGetList(int page = 1, int itemPerPage = 100)
         {
             if (itemPerPage < 1)
                 throw new ArgumentException("Please ask for at least 1 item per page otherwise this call is irrelevant.", "itemPerPage");
@@ -107,9 +108,9 @@ namespace Vooban.FreshBooks.DotNet.Api
                 p.per_page = itemPerPage;
             });
 
-            var response = (FreshbooksPagedResponse<Staff>) FreshbooksConvert.ToPagedResponse<Staff>(resultStaff);
+            var response = (FreshbooksPagedResponse<StaffModel>) FreshbooksConvert.ToPagedResponse<StaffModel>(resultStaff);
 
-            return response.WithResult((IEnumerable<Staff>)BuildEnumerableFromDynamicResult(resultStaff));
+            return response.WithResult((IEnumerable<StaffModel>)BuildEnumerableFromDynamicResult(resultStaff));
         }
 
         /// <summary>
@@ -119,9 +120,9 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        public IEnumerable<FreshbooksPagedResponse<Staff>> CallGetAllPages()
+        public IEnumerable<FreshbooksPagedResponse<StaffModel>> CallGetAllPages()
         {
-            var result = new List<FreshbooksPagedResponse<Staff>>();
+            var result = new List<FreshbooksPagedResponse<StaffModel>>();
             var response = CallGetList(1, 100);
             if (response.Status)
             {
@@ -149,21 +150,21 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// Build an <see cref="IEnumerable{T}"/> from the dynamic Freshbooks response.
         /// </summary>
         /// <param name="resultStaff">The Freshbooks response as a dynamic object</param>
-        /// <returns>An <see cref="IEnumerable{Staff}"/> based on the Freshbooks response.</returns>
-        private static IEnumerable<Staff> BuildEnumerableFromDynamicResult(dynamic resultStaff)
+        /// <returns>An <see cref="IEnumerable{StaffModel}"/> based on the Freshbooks response.</returns>
+        private static IEnumerable<StaffModel> BuildEnumerableFromDynamicResult(dynamic resultStaff)
         {
             foreach (var staffMember in resultStaff.response.staff_members.member)
                 yield return CreateStaffFromFreshbooksData(staffMember);
         }
 
         /// <summary>
-        /// Map the Freshbooks dynamic object to the <see cref="Staff"/> class.
+        /// Map the Freshbooks dynamic object to the <see cref="StaffModel"/> class.
         /// </summary>
         /// <param name="staffMember">The dynamic object loaded from the Freshbooks response</param>
-        /// <returns>The <see cref="Staff"/> instance correctly filled with the Freshbooks response</returns>
-        private static Staff CreateStaffFromFreshbooksData(dynamic staffMember)
+        /// <returns>The <see cref="StaffModel"/> instance correctly filled with the Freshbooks response</returns>
+        private static StaffModel CreateStaffFromFreshbooksData(dynamic staffMember)
         {
-            return new Staff
+            return new StaffModel
             {
                 Id = staffMember.staff_id,
                 Username = staffMember.username,
@@ -176,7 +177,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                 LastLogin = FreshbooksConvert.ToDateTime(staffMember.last_login),
                 NumberOfLogins = FreshbooksConvert.ToInt32(staffMember.number_of_logins),
                 SignupDate = FreshbooksConvert.ToDateTime(staffMember.signup_date),
-                HomeAddress = new Address
+                HomeAddress = new AddressModel
                 {
                     Street1 = staffMember.street1,
                     Street2 = staffMember.street2,

@@ -1,7 +1,8 @@
 ﻿using System;
+using Vooban.FreshBooks.DotNet.Api.Staff;
 using Xunit;
 
-namespace Vooban.FreshBooks.DotNet.Api.Tests
+namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
 {    
     public class StaffApiTests
     {

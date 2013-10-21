@@ -10,7 +10,7 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// <summary>
     /// Helper class to facilitate conversion from Freshbooks to the .NET world
     /// </summary>
-    static class FreshbooksConvert
+    public static class FreshbooksConvert
     {
         /// <summary>
         /// Converts the string value representing a boolean in Freshbooks to a real <c>boolean</c> value.
@@ -22,6 +22,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             return !string.IsNullOrEmpty(value) && value == "1";
         }
 
+        /// <summary>
+        /// Converts the string value representing a double in Freshbooks to a real <c>double</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks string value.</param>
+        /// <returns>The double value corresponding to the Freshbooks string</returns>
         public static double? ToDouble(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -32,6 +37,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             return null;
         }
 
+        /// <summary>
+        /// Converts the value representing a integer in Freshbooks to a real <c>integer</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks string value.</param>
+        /// <returns>The integer value corresponding to the Freshbooks object</returns>
         public static int ToInt32(object value)
         {
             if (value == null)
@@ -40,6 +50,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             return ToInt32(value.ToString());
         }
 
+        /// <summary>
+        /// Converts the string value representing a integer in Freshbooks to a real <c>integer</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks string value.</param>
+        /// <returns>The integer value corresponding to the Freshbooks string.</returns>
         public static int ToInt32(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -50,6 +65,12 @@ namespace Vooban.FreshBooks.DotNet.Api
             throw new InvalidOperationException("value cannot be null or empty");
         }
 
+        /// <summary>
+        /// Converts the value representing a percentage in Freshbooks to a <c>double</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks string value.</param>
+        /// <returns>The double value corresponding to the Freshbooks string percentage</returns>
+        /// <remarks>Freshbooks percentage are represented as full number, but this methods returns the fractionnal.</remarks>
         public static double? ToPercentage(string value)
         {
             var result = ToDouble(value);
@@ -60,6 +81,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             return null;
         }
 
+        /// <summary>
+        /// Converts the value representing a date in Freshbooks to a real <c>DateTime</c> value.
+        /// </summary>
+        /// <param name="value">The Freshbooks string value.</param>
+        /// <returns>The date value corresponding to the Freshbooks object</returns>
         public static DateTime? ToDateTime(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -70,13 +96,24 @@ namespace Vooban.FreshBooks.DotNet.Api
             return null;
         }
 
-        public static FreshbooksResponse<T> ToResponse<T>(dynamic value)
+        /// <summary>
+        /// Convert the Freshbooks dynamic response to a <see cref="FreshbooksGetResponse{T}"/> instance.
+        /// </summary>
+        /// <typeparam name="T">The type of instance to return</typeparam>
+        /// <param name="value">The dynamic response from Freshbooks</param>
+        /// <returns>The prepolulated response status</returns>
+        public static FreshbooksGetResponse<T> ToResponse<T>(dynamic value)
         {
-            return new FreshbooksResponse<T> {
+            return new FreshbooksGetResponse<T> {
                 Status = value.response.status == "ok"
             };
         }
 
+        /// <summary>
+        /// Converts the dynamics Freshbooks response to a <see cref="FreshbooksPagedResponse{T}"/>
+        /// </summary>
+        /// <param name="value">The Freshbooks response</param>
+        /// <returns>The converted paged response</returns>
         public static FreshbooksPagedResponse ToPagedResponse(dynamic value)
         {
             var responseFriendly = value.response as FriendlyDynamic;
@@ -104,6 +141,14 @@ namespace Vooban.FreshBooks.DotNet.Api
             return null;
         }
 
+        /// <summary>
+        /// Converts the dynamics Freshbooks response to a <see cref="FreshbooksPagedResponse{T}" />
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IEnumerable{T}"/> that will be returned in the paged response.</typeparam>
+        /// <param name="value">The Freshbooks response</param>
+        /// <returns>
+        /// The converted paged response
+        /// </returns>
         public static FreshbooksPagedResponse<T> ToPagedResponse<T>(dynamic value) 
         {
             return new FreshbooksPagedResponse<T>(ToPagedResponse(value));           

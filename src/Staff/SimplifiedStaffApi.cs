@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
+using Vooban.FreshBooks.DotNet.Api.Staff.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace Vooban.FreshBooks.DotNet.Api.Staff
 {
     /// <summary>
-    /// Simplified version of the API, allowing you to get only the right <see cref="Staff"/> instead of dealing with the <see cref="FreshbooksResponse"/> object.
+    /// Simplified version of the API, allowing you to get only the right <see cref="StaffModel"/> instead of dealing with the <see cref="FreshbooksResponse"/> object.
     /// </summary>
     /// <remarks>
     /// This class with throw an <see cref="InvalidOperationException"/> when the freshbooks response status is different than "ok"
@@ -42,7 +43,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <summary>
         /// Get the information about the currently authentified user in Freshbooks, that is the account which the <c>Freshbooks</c> client uses.
         /// </summary>
-        public Staff Current 
+        public StaffModel Current 
         { 
             get
             {
@@ -63,8 +64,8 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// Get the staff member associated with the provided <paramref name="id"/>
         /// </summary>
         /// <param name="id">The <c>staff_id</c> identifying this person in Freshbooks</param>
-        /// <returns>The complete <see cref="Staff"/> information resumed in a single class instance</returns>
-        public Staff Get(string id)
+        /// <returns>The complete <see cref="StaffModel"/> information resumed in a single class instance</returns>
+        public StaffModel Get(string id)
         {
             var currentResponse = CallGet(id);
 
@@ -80,10 +81,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <param name="page">The page that will be fetch from Freshbooks</param>
         /// <param name="itemPerPage">The number of items to retrieve per page</param>
         /// <returns>
-        /// A <see cref="FreshbooksPagedResponse&lt;Staff&gt;"/> giving the current page result as well as indications
+        /// A <see cref="FreshbooksPagedResponse&lt;StaffModel&gt;"/> giving the current page result as well as indications
         /// on the total number of pages and the total number of items available on the Freshbook server
         /// </returns>
-        public FreshbooksPagedResponse<Staff> GetList(int page = 1, int itemPerPage = 100)
+        public FreshbooksPagedResponse<StaffModel> GetList(int page = 1, int itemPerPage = 100)
         {
             var currentResponse = CallGetList(page, itemPerPage);
 
@@ -100,7 +101,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <see cref="GetList" /> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        public IEnumerable<Staff> GetAll()
+        public IEnumerable<StaffModel> GetAll()
         {
             var response = CallGetAllPages().ToList();
 
