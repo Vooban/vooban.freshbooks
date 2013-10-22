@@ -9,22 +9,13 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.
     /// </summary>
-    public class StaffApi
+    public class StaffApi : BaseApi<StaffModel>
     {
         #region Constantes
 
         public const string COMMAND_STAFF_LIST = "staff.list";
         public const string COMMAND_STAFF_CURRENT = "staff.current";
         public const string COMMAND_STAFF_GET = "staff.get";
-
-        #endregion
-
-        #region Private members
-
-        /// <summary>
-        /// This holds the Freshbooks clients that will be used to communicate with Freshbooks
-        /// </summary>
-        private readonly Lazy<HastyAPI.FreshBooks.FreshBooks> _freshbooks;
 
         #endregion
 
@@ -36,8 +27,8 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// <param name="freshbooks">The freshbooks client to use as a <c>Lazy</c> instance.</param>
         [InjectionConstructor]
         public StaffApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
+            :base(freshbooks)
         {
-            _freshbooks = freshbooks;
         }
 
         /// <summary>
@@ -45,8 +36,8 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use.</param>
         public StaffApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
+            : base(freshbooks)
         {
-            _freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(()=>freshbooks);
         }
 
         #endregion
@@ -59,11 +50,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// <returns>The <see cref="StaffModel"/> information of the client used to communicate with Freshbooks</returns>
         public FreshbooksGetResponse<StaffModel> CallGetCurrent()
         {
-            var currentStaffMember = _freshbooks.Value.Call(COMMAND_STAFF_CURRENT);
-
-            var response = FreshbooksConvert.ToResponse<StaffModel>(currentStaffMember);
-
-            return (FreshbooksGetResponse<StaffModel>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
+            return CallGetMethod(COMMAND_STAFF_CURRENT, p => CreateStaffFromFreshbooksData(p.response.staff));           
         }
 
         /// <summary>
@@ -75,11 +62,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// </returns>
         public FreshbooksGetResponse<StaffModel> CallGet(string staffId)
         {
-            var currentStaffMember = _freshbooks.Value.Call(COMMAND_STAFF_GET, p => p.staff_id = staffId);
-
-            var response = FreshbooksConvert.ToResponse<StaffModel>(currentStaffMember);
-
-            return (FreshbooksGetResponse<StaffModel>)response.WithResult(CreateStaffFromFreshbooksData(currentStaffMember));
+            return CallGetMethod(COMMAND_STAFF_GET, p => p.staff_id = staffId, r => CreateStaffFromFreshbooksData(r.response.staff));           
         }
 
         /// <summary>
@@ -97,20 +80,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// </exception>
         public FreshbooksPagedResponse<StaffModel> CallGetList(int page = 1, int itemPerPage = 100)
         {
-            if (itemPerPage < 1)
-                throw new ArgumentException("Please ask for at least 1 item per page otherwise this call is irrelevant.", "itemPerPage");
-
-            if (itemPerPage > 100)
-                throw new ArgumentException("The max number of items per page supported by Freshbooks is 100.", "itemPerPage");
-
-            var resultStaff = _freshbooks.Value.Call(COMMAND_STAFF_LIST, p =>{
-                p.page = page;
-                p.per_page = itemPerPage;
-            });
-
-            var response = (FreshbooksPagedResponse<StaffModel>) FreshbooksConvert.ToPagedResponse<StaffModel>(resultStaff);
-
-            return response.WithResult((IEnumerable<StaffModel>)BuildEnumerableFromDynamicResult(resultStaff));
+            return CallGetListMethod(COMMAND_STAFF_LIST, r => BuildEnumerableFromDynamicResult(r), null, page, itemPerPage);          
         }
 
         /// <summary>
@@ -122,24 +92,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// <returns>The entire content available on Freshbooks</returns>
         public IEnumerable<FreshbooksPagedResponse<StaffModel>> CallGetAllPages()
         {
-            var result = new List<FreshbooksPagedResponse<StaffModel>>();
-            var response = CallGetList(1, 100);
-            if (response.Status)
-            {
-                // Add items obtained from the first page
-                result.Add(response);
-
-                // Add items for remaining pages                
-                for (int i = 2; i <= response.TotalPages; i++)
-                {
-                    response = CallGetList(i, 100);
-                    result.Add(response);
-                }
-            }
-            else
-                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Status));
-
-            return result;
+            return CallGetAllPagesMethod(COMMAND_STAFF_LIST, r => BuildEnumerableFromDynamicResult(r));            
         }
 
         #endregion
@@ -177,15 +130,25 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
                 LastLogin = FreshbooksConvert.ToDateTime(staffMember.last_login),
                 NumberOfLogins = FreshbooksConvert.ToInt32(staffMember.number_of_logins),
                 SignupDate = FreshbooksConvert.ToDateTime(staffMember.signup_date),
-                HomeAddress = new AddressModel
-                {
-                    Street1 = staffMember.street1,
-                    Street2 = staffMember.street2,
-                    City = staffMember.city,
-                    State = staffMember.state,
-                    Country = staffMember.country,
-                    Code = staffMember.code
-                }
+                HomeAddress = CreateAddressFromDynamicObject(staffMember)
+            };
+        }
+
+        /// <summary>
+        /// Creates an address object from a Freshbooks dynamic response
+        /// </summary>
+        /// <param name="value">Le object from which we extract the address</param>
+        /// <returns>The correctly formatted address</returns>
+        private static AddressModel CreateAddressFromDynamicObject(dynamic value)
+        {
+            return new AddressModel
+            {
+                Street1 = value.street1,
+                Street2 = value.street2,
+                City = value.city,
+                State = value.state,
+                Country = value.country,
+                Code = value.code
             };
         }
 
