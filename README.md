@@ -1,5 +1,5 @@
-#HastyAPI.FreshBooks.Wrapper#
-Long story short, this project is just a wrapper around the great [HastyAPI.Freshbooks](https://github.com/lukesampson/HastyAPI.FreshBooks).
+#Vooban.Freshbooks.DotNet.Api#
+Long story short, this project is just a wrapper around the great [HastyAPI.Freshbooks](https://github.com/lukesampson/HastyAPI.FreshBooks) use to communicate with [Freshbooks](http://www.freshbooks.com) cloud accounting system.
 
 ## Goals ##
 The goal for us is to ease developpement using Freshbooks for .NET users, while providing an API that can be used easily.
