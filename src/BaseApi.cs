@@ -4,7 +4,7 @@ using HastyAPI;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.Staff
+namespace Vooban.FreshBooks.DotNet.Api
 {
     public abstract class BaseApi<T> where T : FreshbooksModel
     {

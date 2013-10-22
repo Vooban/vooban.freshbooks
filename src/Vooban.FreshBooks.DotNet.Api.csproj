@@ -66,7 +66,7 @@
     <Compile Include="Models\FreshbooksGetResponse.cs" />
     <Compile Include="Models\FreshbooksPagedResponse.cs" />
     <Compile Include="Models\FreshbooksResponse.cs" />
-    <Compile Include="Staff\BaseApi.cs" />
+    <Compile Include="BaseApi.cs" />
     <Compile Include="Staff\SimplifiedStaffApi.cs" />
     <Compile Include="Staff\StaffApi.cs" />
     <Compile Include="Models\AddressModel.cs" />
