@@ -63,13 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers.cs" />
     <Compile Include="Models\FreshbooksGetResponse.cs" />
     <Compile Include="Models\FreshbooksPagedResponse.cs" />
     <Compile Include="Models\FreshbooksResponse.cs" />
     <Compile Include="BaseApi.cs" />
     <Compile Include="Staff\SimplifiedStaffApi.cs" />
     <Compile Include="Staff\StaffApi.cs" />
-    <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Staff\Models\StaffAddressModel.cs" />
     <Compile Include="Staff\Models\StaffModel.cs" />
     <Compile Include="Models\FreshbooksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

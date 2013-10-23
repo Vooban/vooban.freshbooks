@@ -50,7 +50,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// <returns>The <see cref="StaffModel"/> information of the client used to communicate with Freshbooks</returns>
         public FreshbooksGetResponse<StaffModel> CallGetCurrent()
         {
-            return CallGetMethod(COMMAND_STAFF_CURRENT, p => CreateStaffFromFreshbooksData(p.response.staff));           
+            return CallGetMethod(COMMAND_STAFF_CURRENT, p => StaffModel.FromFreshbooksDynamic(p.response.staff));           
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         /// </returns>
         public FreshbooksGetResponse<StaffModel> CallGet(string staffId)
         {
-            return CallGetMethod(COMMAND_STAFF_GET, p => p.staff_id = staffId, r => CreateStaffFromFreshbooksData(r.response.staff));           
+            return CallGetMethod(COMMAND_STAFF_GET, p => p.staff_id = staffId, r => StaffModel.FromFreshbooksDynamic(r.response.staff));           
         }
 
         /// <summary>
@@ -107,49 +107,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
         private static IEnumerable<StaffModel> BuildEnumerableFromDynamicResult(dynamic resultStaff)
         {
             foreach (var staffMember in resultStaff.response.staff_members.member)
-                yield return CreateStaffFromFreshbooksData(staffMember);
-        }
-
-        /// <summary>
-        /// Map the Freshbooks dynamic object to the <see cref="StaffModel"/> class.
-        /// </summary>
-        /// <param name="staffMember">The dynamic object loaded from the Freshbooks response</param>
-        /// <returns>The <see cref="StaffModel"/> instance correctly filled with the Freshbooks response</returns>
-        private static StaffModel CreateStaffFromFreshbooksData(dynamic staffMember)
-        {
-            return new StaffModel
-            {
-                Id = staffMember.staff_id,
-                Username = staffMember.username,
-                FirstName = staffMember.first_name,
-                Lastname = staffMember.last_name,                    
-                Email = staffMember.email,
-                BusinessPhone = staffMember.business_phone,
-                MobilePhone = staffMember.mobile_phone,
-                Rate = FreshbooksConvert.ToDouble(staffMember.rate),
-                LastLogin = FreshbooksConvert.ToDateTime(staffMember.last_login),
-                NumberOfLogins = FreshbooksConvert.ToInt32(staffMember.number_of_logins),
-                SignupDate = FreshbooksConvert.ToDateTime(staffMember.signup_date),
-                HomeAddress = CreateAddressFromDynamicObject(staffMember)
-            };
-        }
-
-        /// <summary>
-        /// Creates an address object from a Freshbooks dynamic response
-        /// </summary>
-        /// <param name="value">Le object from which we extract the address</param>
-        /// <returns>The correctly formatted address</returns>
-        private static AddressModel CreateAddressFromDynamicObject(dynamic value)
-        {
-            return new AddressModel
-            {
-                Street1 = value.street1,
-                Street2 = value.street2,
-                City = value.city,
-                State = value.state,
-                Country = value.country,
-                Code = value.code
-            };
+                yield return StaffModel.FromFreshbooksDynamic(staffMember);
         }
 
         #endregion

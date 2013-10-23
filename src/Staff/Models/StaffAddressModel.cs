@@ -1,9 +1,9 @@
-﻿namespace Vooban.FreshBooks.DotNet.Api.Models
+﻿namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
 {
     /// <summary>
     /// This class model represent an address in the Freshbooks world. It can represent any address in Freshbooks
     /// </summary>
-    public class AddressModel
+    public class StaffAddressModel
     {
         /// <summary>
         /// Gets the first line of the address
@@ -34,5 +34,23 @@
         /// Gets the country code
         /// </summary>
         public string Code { get; internal set; }
+
+        /// <summary>
+        /// Creates an address object from a Freshbooks dynamic response
+        /// </summary>
+        /// <param name="value">Le object from which we extract the address</param>
+        /// <returns>The correctly formatted address</returns>
+        public static StaffAddressModel FromFreshbooksDynamic(dynamic value)
+        {
+            return new StaffAddressModel
+            {
+                Street1 = value.street1,
+                Street2 = value.street2,
+                City = value.city,
+                State = value.state,
+                Country = value.country,
+                Code = value.code
+            };
+        }
     }
 }

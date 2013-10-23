@@ -36,7 +36,9 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
         /// </summary>
         /// <param name="inner">The base response object from which we should copy all properties</param>
         public FreshbooksPagedResponse(FreshbooksPagedResponse inner)
-        {           
+        {
+            if (inner == null)
+                throw new ArgumentNullException("inner","Invalid basic response");
             Status = inner.Status;
             Page = inner.Page;
             ItemPerPage = inner.ItemPerPage;

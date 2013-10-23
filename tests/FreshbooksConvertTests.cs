@@ -10,6 +10,105 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
 {
     public class FreshbooksConvertTests
     {
+        public class FromBoolean
+        {
+            [Fact]
+            public void NullValueReturnsNull()
+            {
+                Assert.Null(FreshbooksConvert.FromBoolean(null));
+            }
+
+            [Fact]
+            public void ValueReturnsTrueAsExpected()
+            {
+                Assert.Equal("1", FreshbooksConvert.FromBoolean(true));
+            }
+
+            [Fact]
+            public void ValueReturnsFalseAsExpected()
+            {
+                Assert.Equal("0", FreshbooksConvert.FromBoolean(false));
+            }
+        }
+
+        public class FromDouble
+        {
+            [Fact]
+            public void NullValueReturnsNull()
+            {
+                Assert.Null(FreshbooksConvert.FromDouble(null));
+            }
+
+            [Fact]
+            public void ValueWithoutFractionReturnsAsExpected()
+            {
+                Assert.Equal("34", FreshbooksConvert.FromDouble(34));
+            }
+
+            [Fact]
+            public void ValueWithFractionReturnsAsExpected()
+            {
+                Assert.Equal("34.48", FreshbooksConvert.FromDouble(34.48));
+            }
+        }
+
+        public class FromPercentage
+        {
+            [Fact]
+            public void NullValueReturnsNull()
+            {
+                Assert.Null(FreshbooksConvert.FromPercentage(null));
+            }
+
+            [Fact]
+            public void PercentageReturnsAsExpected()
+            {
+                Assert.Equal("34", FreshbooksConvert.FromPercentage(0.34));
+            }
+
+            [Fact]
+            public void PercentageUnderZeroThrowsAsExpected()
+            {
+                Assert.Throws<ArgumentException>(() => FreshbooksConvert.FromPercentage(-1));
+            }
+
+            [Fact]
+            public void PercentageAboveOneThrowsAsExpected()
+            {
+                Assert.Throws<ArgumentException>(() => FreshbooksConvert.FromPercentage(1.1));
+            }
+        }
+
+        public class FromInteger
+        {
+            [Fact]
+            public void NullValueReturnsNull()
+            {
+                Assert.Null(FreshbooksConvert.FromInteger(null));
+            }
+
+            [Fact]
+            public void ValueReturnsAsExpected()
+            {
+                Assert.Equal("34", FreshbooksConvert.FromInteger(34));
+            } 
+        }
+
+        public class FromDateTime
+        {
+            [Fact]
+            public void NullValueReturnsNull()
+            {
+                Assert.Null(FreshbooksConvert.FromDateTime(null));
+            }
+
+            [Fact]
+            public void ValueReturnsAsExpected()
+            {
+                Assert.Equal("2000-01-01 10:10:10", FreshbooksConvert.FromDateTime(new DateTime(2000, 01, 01, 10, 10, 10)));
+            } 
+        }
+
         public class ToBoolean
         {
              [Fact]

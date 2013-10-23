@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using HastyAPI;
@@ -14,6 +12,76 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// </summary>
     public static class FreshbooksConvert
     {
+        /// <summary>
+        /// Converts a .NET value into its Freshbooks counterpart
+        /// </summary>
+        /// <param name="value">The double value to convert</param>
+        /// <returns>The value as string</returns>
+        public static string FromDouble(double? value)
+        {
+            if (value.HasValue)
+                return value.Value.ToString(CultureInfo.InvariantCulture);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a .NET value into its Freshbooks counterpart
+        /// </summary>
+        /// <param name="value">The percentage value to convert</param>
+        /// <returns>The value as string</returns>
+        public static string FromPercentage(double? value)
+        {
+            if (value.HasValue)
+            {
+                if (value.Value < 0 || value.Value > 1)
+                    throw new ArgumentException("A .NET percentage value must be between 0 and 1", "value");
+
+                return (value.Value * 100.0).ToString(CultureInfo.InvariantCulture);                
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a .NET value into its Freshbooks counterpart
+        /// </summary>
+        /// <param name="value">The boolean value to convert</param>
+        /// <returns>The value as string</returns>
+        public static string FromBoolean(bool? value)
+        {
+            if (value.HasValue)
+                return value.Value ? "1" : "0";
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a .NET value into its Freshbooks counterpart
+        /// </summary>
+        /// <param name="value">The boolean value to convert</param>
+        /// <returns>The value as string</returns>
+        public static string FromInteger(Int32? value)
+        {
+            if (value.HasValue)
+                return value.Value.ToString(CultureInfo.InvariantCulture);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts a .NET value into its Freshbooks counterpart
+        /// </summary>
+        /// <param name="value">The boolean value to convert</param>
+        /// <returns>The value as string</returns>
+        public static string FromDateTime(DateTime? value)
+        {
+            if (value.HasValue)
+                return value.Value.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+
+            return null;
+        }
+
         /// <summary>
         /// Converts the string value representing a boolean in Freshbooks to a real <c>boolean</c> value.
         /// </summary>
@@ -148,7 +216,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                 }
             }
 
-            return null;
+            return new FreshbooksPagedResponse() { Status = false};
         }
 
         /// <summary>
@@ -164,14 +232,5 @@ namespace Vooban.FreshBooks.DotNet.Api
             return new FreshbooksPagedResponse<T>(ToPagedResponse(value));           
         }
 
-        public static dynamic ToDynamic(this object value)
-        {
-            IDictionary<string, object> expando = new ExpandoObject();
-
-            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(value.GetType()))
-                expando.Add(property.Name, property.GetValue(value));
-
-            return expando as ExpandoObject;
-        }
     }
 }

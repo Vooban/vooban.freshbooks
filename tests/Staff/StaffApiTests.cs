@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Linq;
 using Vooban.FreshBooks.DotNet.Api.Staff;
+using Vooban.FreshBooks.DotNet.Api.Staff.Models;
 using Xunit;
 
 namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
 {    
     public class StaffApiTests
     {
-        private const string USERNAME = "";
-        private const string TOKEN = "";
+        private static readonly string _username = Environment.GetEnvironmentVariable("FreshbooksUsername");
+        private static readonly string _token = Environment.GetEnvironmentVariable("FreshbooksToken");
 
         public class CallGetCurrent
-        {
+        {       
             [Fact]
             public void WorksAsExpected()
             {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(USERNAME, TOKEN));
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
                 
                 var testedClass = new StaffApi(freshbooks);
 
@@ -28,7 +30,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
             [Fact]
             public void WorksAsExpected()
             {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(USERNAME, TOKEN));
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
                 var testedClass = new StaffApi(freshbooks);
 
@@ -37,13 +39,12 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
             }
         }
 
-
         public class CallGetList
         {
             [Fact]
             public void WorksAsExpected()
             {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(USERNAME, TOKEN));
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
                 var testedClass = new StaffApi(freshbooks);
 
@@ -57,12 +58,27 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
             [Fact]
             public void WorksAsExpected()
             {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(USERNAME, TOKEN));
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
                 var testedClass = new StaffApi(freshbooks);
 
                 var result = testedClass.CallGetAllPages();
                 Assert.NotNull(result);
+            }
+        }
+
+        public class CallSearch
+        {
+            [Fact]
+            public void WorksAsExpected()
+            {
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
+
+                var testedClass = new StaffApi(freshbooks);
+
+                var result = testedClass.CallSearch(new StaffModel() { Email = "jerome.hinse@vooban.com"});
+                Assert.NotNull(result);
+                Assert.True(result.Result.Single().Email == "jerome.hinse@vooban.com");
             }
         }
     }

@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using HastyAPI;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
 
 namespace Vooban.FreshBooks.DotNet.Api
 {
+    /// <summary>
+    /// Base API class allowing an easy development of Freshbooks API ressources
+    /// </summary>
+    /// <typeparam name="T">The type of model manipulated by this class</typeparam>
     public abstract class BaseApi<T> where T : FreshbooksModel
     {
         #region Private members
@@ -45,6 +51,8 @@ namespace Vooban.FreshBooks.DotNet.Api
         protected HastyAPI.FreshBooks.FreshBooks FreshbooksClient { get { return _freshbooks.Value; } }
 
         #endregion
+
+        #region Protected Methods
 
         /// <summary>
         /// Call the <c>staff.current</c> method on the Freshbooks API.
@@ -108,12 +116,48 @@ namespace Vooban.FreshBooks.DotNet.Api
             if (parameterBuilder != null)
                 parameterBuilder(parameter);
 
-            parameter.page = page;
-            parameter.per_page = itemPerPage;
+            dynamic paging = new ExpandoObject();
+            paging.page = page;
+            paging.per_page = itemPerPage;
 
+            Action<dynamic> pbuilder = p => Combine(p, parameter, paging);
+           
 // ReSharper disable RedundantAssignment
-            var callListResult = FreshbooksClient.Call(apiName, p=> p = parameter);
+            var callListResult = FreshbooksClient.Call(apiName, pbuilder);
 // ReSharper restore RedundantAssignment
+
+            var response = (FreshbooksPagedResponse<T>)FreshbooksConvert.ToPagedResponse<T>(callListResult);
+
+            return response.WithResult((IEnumerable<T>)resultBuilder(callListResult));
+        }
+
+        /// <summary>
+        /// Allows one to search based on object template
+        /// </summary>
+        /// <param name="apiName">The name of the API to call</param>
+        /// <param name="resultBuilder">The result builder use to create the resulting <see cref="IEnumerable{T}"/></param>
+        /// <param name="template">The template onto which the query will be created</param>
+        /// <param name="page">The page requested</param>
+        /// <param name="itemPerPage">The number of item per page requestes</param>
+        /// <returns></returns>
+        protected FreshbooksPagedResponse<T> CallSearchMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, T template, int page = 1, int itemPerPage = 100)
+        {
+            if (itemPerPage < 1)
+                throw new ArgumentException("Please ask for at least 1 item per page otherwise this call is irrelevant.", "itemPerPage");
+
+            if (itemPerPage > 100)
+                throw new ArgumentException("The max number of items per page supported by Freshbooks is 100.", "itemPerPage");
+
+            dynamic paging = new ExpandoObject();
+            paging.page = page;
+            paging.per_page = itemPerPage;
+
+            Action<dynamic> parameterBuilder = p=> Combine(p, template.ToFreshbooksDynamic(), paging);
+           
+            // ReSharper disable RedundantAssignment
+            var callListResult = FreshbooksClient.Call(apiName, parameterBuilder);
+
+            // ReSharper restore RedundantAssignment
 
             var response = (FreshbooksPagedResponse<T>)FreshbooksConvert.ToPagedResponse<T>(callListResult);
 
@@ -147,6 +191,50 @@ namespace Vooban.FreshBooks.DotNet.Api
                 throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Status));
 
             return result;
+        }
+
+        /// <summary>
+        /// Get all the staff member available on Freshbooks with a single API call.
+        /// </summary>
+        /// <remarks>
+        /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
+        /// </remarks>
+        /// <returns>The entire content available on Freshbooks</returns>
+        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, T template)
+        {
+            var result = new List<FreshbooksPagedResponse<T>>();
+            var response = CallSearchMethod(apiName, resultBuilder, template);
+            if (response.Status)
+            {
+                // Add items obtained from the first page
+                result.Add(response);
+
+                // Add items for remaining pages                
+                for (int i = 2; i <= response.TotalPages; i++)
+                {
+                    response = CallSearchMethod(apiName, resultBuilder, template, i);
+                    result.Add(response);
+                }
+            }
+            else
+                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Status));
+
+            return result;
+        }
+
+        #endregion
+        static dynamic Combine(dynamic item1, dynamic item2, dynamic item3)
+        {
+            var dictionary1 = (IDictionary<string, object>)item1;
+            var dictionary2 = (IDictionary<string, object>)item2;
+            var dictionary3 = (IDictionary<string, object>)item3;
+           
+            foreach (var pair in dictionary1.Concat(dictionary2).Concat(dictionary3))
+            {
+                dictionary1[pair.Key] = pair.Value;
+            }
+
+            return dictionary1;
         }
     }
 }
