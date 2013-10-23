@@ -67,19 +67,5 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
             }
         }
 
-        public class CallSearch
-        {
-            [Fact]
-            public void WorksAsExpected()
-            {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
-
-                var testedClass = new StaffApi(freshbooks);
-
-                var result = testedClass.CallSearch(new StaffModel() { Email = "jerome.hinse@vooban.com"});
-                Assert.NotNull(result);
-                Assert.True(result.Result.Single().Email == "jerome.hinse@vooban.com");
-            }
-        }
     }
 }
