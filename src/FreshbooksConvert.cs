@@ -216,7 +216,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                 }
             }
 
-            return new FreshbooksPagedResponse() { Status = false};
+            return new FreshbooksPagedResponse() { Status = "fail" };
         }
 
         /// <summary>

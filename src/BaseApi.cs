@@ -140,7 +140,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <param name="page">The page requested</param>
         /// <param name="itemPerPage">The number of item per page requestes</param>
         /// <returns></returns>
-        protected FreshbooksPagedResponse<T> CallSearchMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, T template, int page = 1, int itemPerPage = 100)
+        protected FreshbooksPagedResponse<T> CallSearchMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template, int page = 1, int itemPerPage = 100) where TF:FreshbooksFilter
         {
             if (itemPerPage < 1)
                 throw new ArgumentException("Please ask for at least 1 item per page otherwise this call is irrelevant.", "itemPerPage");
@@ -175,7 +175,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         {
             var result = new List<FreshbooksPagedResponse<T>>();
             var response = CallGetListMethod(apiName, resultBuilder);
-            if (response.Status)
+            if (response.Success)
             {
                 // Add items obtained from the first page
                 result.Add(response);
@@ -188,7 +188,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                 }
             }
             else
-                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Status));
+                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Success));
 
             return result;
         }
@@ -200,11 +200,11 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, T template)
+        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template) where TF :FreshbooksFilter
         {
             var result = new List<FreshbooksPagedResponse<T>>();
             var response = CallSearchMethod(apiName, resultBuilder, template);
-            if (response.Status)
+            if (response.Success)
             {
                 // Add items obtained from the first page
                 result.Add(response);
@@ -217,7 +217,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                 }
             }
             else
-                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Status));
+                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Success));
 
             return result;
         }

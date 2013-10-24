@@ -8,6 +8,11 @@
         /// <summary>
         /// Get the Freshbooks status of the requested operation
         /// </summary>
-        public bool Status { get; internal set; }
+        public bool Success
+        {
+            get { return Status == "ok"; }
+        }
+
+        public string Status { get; internal set; }
     }
 }
