@@ -68,6 +68,7 @@
     <Compile Include="FreshbooksConvertTests.cs" />
     <Compile Include="Staff\StaffApiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeEntry\TimeEntryApiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

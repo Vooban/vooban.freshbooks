@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HastyAPI;
 using Vooban.FreshBooks.DotNet.Api.Models;
-using Vooban.FreshBooks.DotNet.Api.Staff.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.TimeEntries.Models
+namespace Vooban.FreshBooks.DotNet.Api.TimeEntry.Models
 {
     /// <summary>
     /// Represents a Freshbooks TimeEntry (time_entry)

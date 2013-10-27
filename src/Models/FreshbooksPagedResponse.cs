@@ -44,6 +44,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
             ItemPerPage = inner.ItemPerPage;
             TotalPages = inner.TotalPages;
             TotalItems = inner.TotalItems;
+            Error = inner.Error;
         }
 
         /// <summary>

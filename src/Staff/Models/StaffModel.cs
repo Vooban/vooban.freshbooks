@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HastyAPI;
 using Newtonsoft.Json;
 using Vooban.FreshBooks.DotNet.Api.Models;
@@ -89,6 +90,11 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
         public StaffAddressModel HomeAddress { get; internal set; }
 
         /// <summary>
+        /// Gets the list of projects identifiers to which this person is associated
+        /// </summary>
+        public IEnumerable<String> ProjectIds { get; internal set; }
+
+        /// <summary>
         /// Converts this instance to a Freshbooks compatible dynamic instance
         /// </summary>
         /// <returns>
@@ -130,6 +136,11 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
         /// <returns>The <see cref="StaffModel"/> instance correctly filled with the Freshbooks response</returns>
         public static StaffModel FromFreshbooksDynamic(dynamic staffMember)
         {
+            var projectIds = new List<String>();
+
+            foreach (var item in staffMember.projects.project)
+                projectIds.Add(item.project_id);
+
             return new StaffModel
             {
                 Id = staffMember.staff_id,
@@ -143,7 +154,8 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
                 LastLogin = FreshbooksConvert.ToDateTime(staffMember.last_login),
                 NumberOfLogins = FreshbooksConvert.ToInt32(staffMember.number_of_logins),
                 SignupDate = FreshbooksConvert.ToDateTime(staffMember.signup_date),
-                HomeAddress = StaffAddressModel.FromFreshbooksDynamic(staffMember)
+                HomeAddress = StaffAddressModel.FromFreshbooksDynamic(staffMember),
+                ProjectIds = projectIds
             };
         }
 

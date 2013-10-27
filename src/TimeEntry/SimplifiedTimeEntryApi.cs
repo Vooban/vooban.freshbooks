@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
 using Vooban.FreshBooks.DotNet.Api.Staff.Models;
-using Vooban.FreshBooks.DotNet.Api.TimeEntries.Models;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.TimeEntries
+namespace Vooban.FreshBooks.DotNet.Api.TimeEntry
 {
     /// <summary>
     /// Simplified version of the API, allowing you to get only the right <see cref="TimeEntryModel"/> instead of dealing with the <see cref="FreshbooksResponse"/> object.

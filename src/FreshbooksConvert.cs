@@ -160,7 +160,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                return DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(value, new string[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" }, CultureInfo.InvariantCulture, DateTimeStyles.None);
             }
 
             return null;
@@ -177,9 +177,21 @@ namespace Vooban.FreshBooks.DotNet.Api
             if (value == null)
                 return null;
 
-            return new FreshbooksGetResponse<T> {
-                Status = value.response.status == "ok"
+            var response = new FreshbooksGetResponse<T> {
+                Status = value.response.status
             };
+
+            if (!response.Success)
+            {
+                response.Error = new FreshbooksError()
+                {
+                    ErrorCode = value.response.code,
+                    ErrorMessage = value.response.error,
+                    ErrorField = value.response.field
+                };
+            }
+
+            return response;
         }
 
         /// <summary>
@@ -205,18 +217,39 @@ namespace Vooban.FreshBooks.DotNet.Api
                     var totalPages = ToInt32(pagingInfo["pages"]);
                     var totalItems = ToInt32(pagingInfo["total"]);
 
-                    return new FreshbooksPagedResponse
+                    var response = new FreshbooksPagedResponse
                     {
-                        Status = value.response.status == "ok",
+                        Status = value.response.status,
                         Page = page.HasValue ? page.Value : 1,
                         ItemPerPage = itemPerPage.HasValue ? itemPerPage.Value : 100,
                         TotalPages = totalPages.HasValue ? totalPages.Value : 1,
                         TotalItems = totalItems.HasValue ? totalItems.Value : 0
                     };
+
+                    if (!response.Success)
+                    {
+                        response.Error = new FreshbooksError()
+                        {
+                            ErrorCode = value.response.code,
+                            ErrorMessage = value.response.error,
+                            ErrorField = value.response.field
+                        };
+                    }
+
+                    return response;
                 }
             }
 
-            return new FreshbooksPagedResponse() { Status = "fail" };
+            return new FreshbooksPagedResponse()
+            {
+                Status = "fail",
+                Error = new FreshbooksError()
+                {
+                    ErrorCode = "unknown",
+                    ErrorMessage = "The Freshbooks response dynamic object was not in the expected format",
+                    ErrorField = "response"
+                }
+            };
         }
 
         /// <summary>

@@ -1,42 +1,27 @@
 ﻿using System;
-using System.Linq;
-using Newtonsoft.Json;
-using Vooban.FreshBooks.DotNet.Api.Staff;
-using Vooban.FreshBooks.DotNet.Api.Staff.Models;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry.Models;
 using Xunit;
 
-namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
+namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
 {    
-    public class StaffApiTests
+    public class TimeEntryApiTests
     {
         private static readonly string _username = Environment.GetEnvironmentVariable("FreshbooksUsername");
         private static readonly string _token = Environment.GetEnvironmentVariable("FreshbooksToken");
 
-        public class CallGetCurrent
-        {       
-            [Fact]
-            public void WorksAsExpected()
-            {
-                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
-                
-                var testedClass = new StaffApi(freshbooks);
-
-                var result = testedClass.CallGetCurrent();
-                Assert.NotNull(result);
-            }
-        }
-        
-        public class CallGetMethod
+        public class CallSearch
         {
             [Fact]
             public void WorksAsExpected()
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new StaffApi(freshbooks);
+                var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallGet("1");
+                var result = testedClass.CallSearch(new TimeEntryFilter() { ProjectId = "3228" });
                 Assert.NotNull(result);
+                Assert.True(result.Success, "The Freshbooks response indicated a fail");
             }
         }
 
@@ -47,28 +32,28 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new StaffApi(freshbooks);
+                var testedClass = new TimeEntryApi(freshbooks);
 
                 var result = testedClass.CallGetList();
                 Assert.NotNull(result);
-
-                Console.Write(JsonConvert.SerializeObject(result));
+                Assert.True(result.Success);
             }
         }
 
-        public class CallGetAllPages
+        public class CallGetMethod
         {
             [Fact]
             public void WorksAsExpected()
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new StaffApi(freshbooks);
+                var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallGetAllPages();
+                var result = testedClass.CallGet("581167");
                 Assert.NotNull(result);
             }
         }
+
 
     }
 }

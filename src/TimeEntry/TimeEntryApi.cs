@@ -4,9 +4,9 @@ using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Models;
 using Vooban.FreshBooks.DotNet.Api.Staff;
 using Vooban.FreshBooks.DotNet.Api.Staff.Models;
-using Vooban.FreshBooks.DotNet.Api.TimeEntries.Models;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.TimeEntries
+namespace Vooban.FreshBooks.DotNet.Api.TimeEntry
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.

@@ -2,16 +2,11 @@
 using HastyAPI;
 using Vooban.FreshBooks.DotNet.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.TimeEntries.Models
+namespace Vooban.FreshBooks.DotNet.Api.TimeEntry.Models
 {
     public class TimeEntryFilter : FreshbooksFilter
     {
         #region Properties
-
-        /// <summary>
-        /// Gets the staff member's unique identifier to which this time entry is associated
-        /// </summary>
-        public string StaffId { get; internal set; }
 
         /// <summary>
         /// Gets the projects's unique identifier to which this time entry is associated
@@ -45,7 +40,6 @@ namespace Vooban.FreshBooks.DotNet.Api.TimeEntries.Models
         {
             dynamic result = new FriendlyDynamic();
 
-            if (!string.IsNullOrEmpty(StaffId)) result.staff_id = StaffId;
             if (!string.IsNullOrEmpty(ProjectId)) result.project_id = ProjectId;
             if (!string.IsNullOrEmpty(TaskId)) result.task_id = TaskId;
             if (DateFrom.HasValue) result.date = FreshbooksConvert.FromDateTime(DateFrom);
