@@ -172,12 +172,33 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <typeparam name="T">The type of instance to return</typeparam>
         /// <param name="value">The dynamic response from Freshbooks</param>
         /// <returns>The prepolulated response status</returns>
-        public static FreshbooksGetResponse<T> ToResponse<T>(dynamic value)
+        public static FreshbooksGetResponse<T> ToGetResponse<T>(dynamic value)
+        {            
+            return  new FreshbooksGetResponse<T>(ToResponse(value));
+        }
+
+        /// <summary>
+        /// Convert the Freshbooks dynamic response to a <see cref="FreshbooksCreateResponse"/> instance.
+        /// </summary>
+        /// <param name="value">The dynamic response from Freshbooks</param>
+        /// <returns>The prepolulated response status</returns>
+        public static FreshbooksCreateResponse ToCreateResponse(dynamic value)
+        {
+            return new FreshbooksCreateResponse(ToResponse(value));
+        }
+
+        /// <summary>
+        /// Convert the Freshbooks dynamic response to a <see cref="FreshbooksCreateResponse"/> instance.
+        /// </summary>
+        /// <param name="value">The dynamic response from Freshbooks</param>
+        /// <returns>The prepolulated response status</returns>
+        public static FreshbooksResponse ToResponse(dynamic value)
         {
             if (value == null)
                 return null;
 
-            var response = new FreshbooksGetResponse<T> {
+            var response = new FreshbooksResponse
+            {
                 Status = value.response.status
             };
 
@@ -193,6 +214,7 @@ namespace Vooban.FreshBooks.DotNet.Api
 
             return response;
         }
+
 
         /// <summary>
         /// Converts the dynamics Freshbooks response to a <see cref="FreshbooksPagedResponse{T}"/>
@@ -217,24 +239,13 @@ namespace Vooban.FreshBooks.DotNet.Api
                     var totalPages = ToInt32(pagingInfo["pages"]);
                     var totalItems = ToInt32(pagingInfo["total"]);
 
-                    var response = new FreshbooksPagedResponse
+                    var response = new FreshbooksPagedResponse(ToResponse(value))
                     {
-                        Status = value.response.status,
                         Page = page.HasValue ? page.Value : 1,
                         ItemPerPage = itemPerPage.HasValue ? itemPerPage.Value : 100,
                         TotalPages = totalPages.HasValue ? totalPages.Value : 1,
                         TotalItems = totalItems.HasValue ? totalItems.Value : 0
                     };
-
-                    if (!response.Success)
-                    {
-                        response.Error = new FreshbooksError()
-                        {
-                            ErrorCode = value.response.code,
-                            ErrorMessage = value.response.error,
-                            ErrorField = value.response.field
-                        };
-                    }
 
                     return response;
                 }

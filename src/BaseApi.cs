@@ -12,7 +12,8 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// Base API class allowing an easy development of Freshbooks API ressources
     /// </summary>
     /// <typeparam name="T">The type of model manipulated by this class</typeparam>
-    public abstract class BaseApi<T> where T : FreshbooksModel
+    public abstract class BaseApi<T> 
+        where T : FreshbooksModel
     {
         #region Private members
 
@@ -36,7 +37,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApi{T}"/> class.
+        /// Initializes a new instance of the <see cref="BaseApi{T, TF}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use.</param>
         protected BaseApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
@@ -55,7 +56,100 @@ namespace Vooban.FreshBooks.DotNet.Api
         #region Protected Methods
 
         /// <summary>
-        /// Call the <c>staff.current</c> method on the Freshbooks API.
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="apiName">The name of the API to call</param>
+        /// <param name="entity">Then entity used to create the entry</param>
+        /// <param name="idBuilder">The function allowing one to return the Id from the dynamic response</param>
+        /// <returns>
+        /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
+        protected FreshbooksCreateResponse CallCreateMethod(string apiName, T entity, Func<dynamic, string> idBuilder) 
+        {
+            if(entity.Id != null)
+                throw new InvalidOperationException("Cannot call the <create> operation using an entity with an Id");
+
+            var callResult = FreshbooksClient.Call(apiName);
+
+            var response = FreshbooksConvert.ToCreateResponse(callResult);
+
+            return (FreshbooksCreateResponse)response.WithResult(idBuilder(callResult));
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="apiName">The name of the API to call</param>
+        /// <param name="entity">Then entity used to update the entry</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
+        protected FreshbooksResponse CallUpdateMethod(string apiName, T entity)
+        {
+            if (string.IsNullOrEmpty(entity.Id))
+                throw new InvalidOperationException("Cannot call the <update> operation using an entity without an Id");
+
+            var callResult = FreshbooksClient.Call(apiName);
+
+            var response = FreshbooksConvert.ToCreateResponse(callResult);
+
+            return (FreshbooksResponse)response;
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="apiName">The name of the API to call</param>
+        /// <param name="entity">Then entity used to create the entry</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an entity without an Id</exception>
+        protected FreshbooksResponse CallDeleteMethod(string apiName, T entity)
+        {
+            if (string.IsNullOrEmpty(entity.Id))
+                throw new InvalidOperationException("Cannot call the <delete> operation using an entity without an Id");
+
+            var callResult = FreshbooksClient.Call(apiName);
+
+            var response = FreshbooksConvert.ToCreateResponse(callResult);
+
+            return (FreshbooksResponse)response;
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="apiName">The name of the API to call</param>
+        /// <param name="idName">Name of field that act as an id.</param>
+        /// <param name="idValue">The value to pass into the id parameter.</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// Cannot call the <c>delete</c> operation using an empty Id
+        /// or
+        /// Cannot call the <c>delete</c> operation using an empty Id identifier
+        /// </exception>
+        protected FreshbooksResponse CallDeleteMethod(string apiName, string idName, string idValue)
+        {
+            if (string.IsNullOrEmpty(idValue))
+                throw new InvalidOperationException("Cannot call the <delete> operation using an empty Id");
+
+            if (string.IsNullOrEmpty(idName))
+                throw new InvalidOperationException("Cannot call the <delete> operation using an empty Id identifier");
+
+            var callResult = FreshbooksClient.Call(apiName);
+
+            var response = FreshbooksConvert.ToCreateResponse(callResult);
+
+            return (FreshbooksResponse)response;
+        }
+
+        /// <summary>
+        /// Call the method corresponsding to the <c>apiName</c> on the Freshbooks API.
         /// </summary>
         /// <param name="apiName">Name of the method.</param>
         /// <param name="resultBuilder">The result builder used to create the resulting object.</param>
@@ -66,7 +160,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         {
             var callResult = FreshbooksClient.Call(apiName);
 
-            var response = FreshbooksConvert.ToResponse<T>(callResult);
+            var response = FreshbooksConvert.ToGetResponse<T>(callResult);
 
             return (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
         }
@@ -84,7 +178,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         {
             var callResult = FreshbooksClient.Call(apiName, parameterBuilder);
 
-            var response = FreshbooksConvert.ToResponse<T>(callResult);
+            var response = FreshbooksConvert.ToGetResponse<T>(callResult);
 
             return (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
         }
@@ -140,7 +234,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <param name="page">The page requested</param>
         /// <param name="itemPerPage">The number of item per page requestes</param>
         /// <returns></returns>
-        protected FreshbooksPagedResponse<T> CallSearchMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template, int page = 1, int itemPerPage = 100) where TF:FreshbooksFilter
+        protected FreshbooksPagedResponse<T> CallSearchMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template, int page = 1, int itemPerPage = 100) where TF : FreshbooksFilter
         {
             if (itemPerPage < 1)
                 throw new ArgumentException("Please ask for at least 1 item per page otherwise this call is irrelevant.", "itemPerPage");
@@ -200,7 +294,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template) where TF :FreshbooksFilter
+        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template) where TF : FreshbooksFilter
         {
             var result = new List<FreshbooksPagedResponse<T>>();
             var response = CallSearchMethod(apiName, resultBuilder, template);

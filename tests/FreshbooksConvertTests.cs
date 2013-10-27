@@ -298,7 +298,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
             [Fact]
             public void NullDynamicValueReturnsNull()
             {
-                Assert.Null(FreshbooksConvert.ToResponse<String>(null));
+                Assert.Null(FreshbooksConvert.ToGetResponse<String>(null));
                 
             }
 
@@ -307,7 +307,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
             {
                 dynamic value = JsonConvert.DeserializeObject("{ response : { status : \"ok\"} }");
 
-                var result = FreshbooksConvert.ToResponse<String>(value);
+                var result = FreshbooksConvert.ToGetResponse<String>(value);
                 
                 Assert.True(result.Status);                
             }

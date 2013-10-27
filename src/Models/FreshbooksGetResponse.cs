@@ -6,7 +6,42 @@
     /// <typeparam name="T">The type of item that will be stored in the <see cref="Result"/> property of this instance</typeparam>
     public class FreshbooksGetResponse<T> : FreshbooksResponse
     {
-        public T Result { get; set; }
+        #region Properties
+
+        /// <summary>
+        /// Gets the operation results
+        /// </summary>
+        public T Result { get; internal set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksGetResponse{T}"/> class.
+        /// </summary>
+        public FreshbooksGetResponse()
+        {}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksGetResponse{T}"/> class.
+        /// </summary>
+        /// <param name="inner">The response from which this response will be initialized.</param>
+        public FreshbooksGetResponse(FreshbooksGetResponse<T> inner)
+            : base(inner)
+        {
+            Result = inner.Result;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksGetResponse{T}"/> class.
+        /// </summary>
+        /// <param name="inner">The response from which this response will be initialized.</param>
+        public FreshbooksGetResponse(FreshbooksResponse inner) 
+            :base(inner)
+        { }
+
+        #endregion
 
         #region Fluent API
 
@@ -22,6 +57,5 @@
         }
 
         #endregion
-
     }
 }

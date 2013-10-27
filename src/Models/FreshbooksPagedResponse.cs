@@ -31,20 +31,28 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
 
         #region Constructors
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksPagedResponse"/> class.
+        /// </summary>
+        /// <param name="inner">The base response object from which we should copy all properties</param>
+        public FreshbooksPagedResponse(FreshbooksResponse inner)
+            : base(inner)
+        { }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FreshbooksPagedResponse"/> class.
         /// </summary>
         /// <param name="inner">The base response object from which we should copy all properties</param>
         public FreshbooksPagedResponse(FreshbooksPagedResponse inner)
+            : base (inner)
         {
             if (inner == null)
                 throw new ArgumentNullException("inner","Invalid basic response");
-            Status = inner.Status;
             Page = inner.Page;
             ItemPerPage = inner.ItemPerPage;
             TotalPages = inner.TotalPages;
             TotalItems = inner.TotalItems;
-            Error = inner.Error;
         }
 
         /// <summary>

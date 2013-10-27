@@ -138,8 +138,13 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
         {
             var projectIds = new List<String>();
 
-            foreach (var item in staffMember.projects.project)
-                projectIds.Add(item.project_id);
+            if (staffMember.projects != null && staffMember.projects.project != null)
+            {
+                foreach (var item in staffMember.projects.project)
+                {
+                    projectIds.Add(item.Key == "project_id" ? item.Value : item.project_id);
+                }
+            }
 
             return new StaffModel
             {

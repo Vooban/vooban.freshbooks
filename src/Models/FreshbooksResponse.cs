@@ -5,6 +5,8 @@
     /// </summary>
     public class FreshbooksResponse
     {
+        #region Properties
+
         /// <summary>
         /// Get the Freshbooks status of the requested operation
         /// </summary>
@@ -23,5 +25,27 @@
         /// Gets the error information when the <see cref="Success"/> property is set to false
         /// </summary>
         public FreshbooksError Error { get; internal set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksResponse"/> class.
+        /// </summary>
+        /// <param name="inner">The response from which this response will be initialized.</param>
+        public FreshbooksResponse(FreshbooksResponse inner)
+        {
+            Status = inner.Status;
+            Error = inner.Error;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FreshbooksResponse"/> class.
+        /// </summary>
+        public FreshbooksResponse()
+        { }
+
+        #endregion
     }
 }

@@ -64,12 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers.cs" />
+    <Compile Include="Models\FreshbooksCreateResponse.cs" />
     <Compile Include="Models\FreshbooksError.cs" />
     <Compile Include="Models\FreshbooksGetResponse.cs" />
     <Compile Include="Models\FreshbooksObject.cs" />
     <Compile Include="Models\FreshbooksPagedResponse.cs" />
     <Compile Include="Models\FreshbooksResponse.cs" />
     <Compile Include="BaseApi.cs" />
+    <Compile Include="Staff\Models\StaffFilter.cs" />
     <Compile Include="Staff\SimplifiedStaffApi.cs" />
     <Compile Include="Staff\StaffApi.cs" />
     <Compile Include="Staff\Models\StaffAddressModel.cs" />
@@ -78,6 +80,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FreshbooksConvert.cs" />
     <Compile Include="Models\FreshbooksFilter.cs" />
+    <Compile Include="ICrudBasicApi.cs" />
+    <Compile Include="IReadOnlyBasicApi.cs" />
     <Compile Include="TimeEntry\Models\TimeEntryFilter.cs" />
     <Compile Include="TimeEntry\Models\TimeEntryModel.cs" />
     <Compile Include="TimeEntry\SimplifiedTimeEntryApi.cs" />

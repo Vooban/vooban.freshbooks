@@ -11,7 +11,7 @@ namespace Vooban.FreshBooks.DotNet.Api.TimeEntry
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.
     /// </summary>
-    public class TimeEntryApi : BaseApi<TimeEntryModel>
+    public class TimeEntryApi : BaseApi<TimeEntryModel>, IFullBasicApi<TimeEntryModel, TimeEntryFilter>
     {
         #region Constantes
 
@@ -122,6 +122,62 @@ namespace Vooban.FreshBooks.DotNet.Api.TimeEntry
         public IEnumerable<FreshbooksPagedResponse<TimeEntryModel>> CallSearchAll(TimeEntryFilter template, int page = 1, int itemPerPage = 100)
         {
             return CallSearchAllMethod(COMMAND_TIMEENTRY_LIST, r => BuildEnumerableFromDynamicResult(r), template);
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="entity">Then entity used to create the entry in Freshbooks</param>
+        /// <returns>
+        /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
+        public FreshbooksCreateResponse CallCreate(TimeEntryModel entity)
+        {
+            return CallCreateMethod(COMMAND_TIMEENTRY_CREATE, entity, id => id.response.time_entry_id);
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="entity">Then entity used to update the entry</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
+        public FreshbooksResponse CallUpdate(TimeEntryModel entity)
+        {
+            return CallUpdateMethod(COMMAND_TIMEENTRY_UPDATE, entity);
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="entity">The entity to delete.</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
+        /// or
+        /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
+        public FreshbooksResponse CallDelete(TimeEntryModel entity)
+        {
+            return CallDeleteMethod(COMMAND_TIMEENTRY_DELETE, entity);
+        }
+
+        /// <summary>
+        /// Creates a new entry in Freshbooks
+        /// </summary>
+        /// <param name="id">The identifier of the time entry to delete.</param>
+        /// <returns>
+        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
+        /// or
+        /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
+        public FreshbooksResponse CallDelete(string id)
+        {
+            return CallDeleteMethod(COMMAND_TIMEENTRY_DELETE, "time_entry_id", id);
         }
 
         #endregion
