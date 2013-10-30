@@ -25,6 +25,20 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
             }
         }
 
+        public class CallCreate
+        {
+            [Fact]
+            public void WorksAsExpected()
+            {
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
+                var testedClass = new TimeEntryApi(freshbooks);
+
+                var result = testedClass.CallCreate(new TimeEntryModel() { TaskId = "999999", Hours = 25d});
+                Assert.NotNull(result);
+                Assert.False(result.Success);
+            }
+        }
+
         public class CallGetList
         {
             [Fact]

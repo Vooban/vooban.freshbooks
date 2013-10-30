@@ -40,7 +40,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         IEnumerable<FreshbooksPagedResponse<T>> CallGetAllPages();
     }
 
-    public interface ISearchableBasicApi<T, in TF>
+    public interface ISearchableBasicApi<T, TF>
         where T : FreshbooksModel
         where TF : FreshbooksFilter
     {

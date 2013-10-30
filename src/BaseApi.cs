@@ -37,7 +37,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApi{T, TF}"/> class.
+        /// Initializes a new instance of the <see cref="BaseApi{T}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use.</param>
         protected BaseApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
@@ -70,11 +70,14 @@ namespace Vooban.FreshBooks.DotNet.Api
             if(entity.Id != null)
                 throw new InvalidOperationException("Cannot call the <create> operation using an entity with an Id");
 
-            var callResult = FreshbooksClient.Call(apiName);
+            var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a).Add(entity.FreshbooksEntityName, entity.ToFreshbooksDynamic()));
 
-            var response = FreshbooksConvert.ToCreateResponse(callResult);
+            var response = (FreshbooksCreateResponse)FreshbooksConvert.ToCreateResponse(callResult);
 
-            return (FreshbooksCreateResponse)response.WithResult(idBuilder(callResult));
+            if (response.Success)
+                return (FreshbooksCreateResponse)response.WithResult(idBuilder(callResult));
+
+            return response;
         }
 
         /// <summary>
@@ -91,32 +94,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             if (string.IsNullOrEmpty(entity.Id))
                 throw new InvalidOperationException("Cannot call the <update> operation using an entity without an Id");
 
-            var callResult = FreshbooksClient.Call(apiName);
+            var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a).Add(entity.FreshbooksEntityName, entity.ToFreshbooksDynamic()));
 
-            var response = FreshbooksConvert.ToCreateResponse(callResult);
+            var response = (FreshbooksResponse)FreshbooksConvert.ToCreateResponse(callResult);
 
-            return (FreshbooksResponse)response;
-        }
-
-        /// <summary>
-        /// Creates a new entry in Freshbooks
-        /// </summary>
-        /// <param name="apiName">The name of the API to call</param>
-        /// <param name="entity">Then entity used to create the entry</param>
-        /// <returns>
-        /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an entity without an Id</exception>
-        protected FreshbooksResponse CallDeleteMethod(string apiName, T entity)
-        {
-            if (string.IsNullOrEmpty(entity.Id))
-                throw new InvalidOperationException("Cannot call the <delete> operation using an entity without an Id");
-
-            var callResult = FreshbooksClient.Call(apiName);
-
-            var response = FreshbooksConvert.ToCreateResponse(callResult);
-
-            return (FreshbooksResponse)response;
+            return response;
         }
 
         /// <summary>
@@ -141,11 +123,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             if (string.IsNullOrEmpty(idName))
                 throw new InvalidOperationException("Cannot call the <delete> operation using an empty Id identifier");
 
-            var callResult = FreshbooksClient.Call(apiName);
+            var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a)[idName] = idValue);
 
-            var response = FreshbooksConvert.ToCreateResponse(callResult);
+            var response = (FreshbooksResponse)FreshbooksConvert.ToCreateResponse(callResult);
 
-            return (FreshbooksResponse)response;
+            return response;
         }
 
         /// <summary>
@@ -317,6 +299,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         }
 
         #endregion
+
         static dynamic Combine(dynamic item1, dynamic item2, dynamic item3)
         {
             var dictionary1 = (IDictionary<string, object>)item1;

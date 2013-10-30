@@ -2,13 +2,6 @@
 
 namespace Vooban.FreshBooks.DotNet.Api
 {
-    public interface IFullBasicApi<T, in TF> : ICrudBasicApi<T>, IReadOnlyBasicApi<T>, ISearchableBasicApi<T, TF> 
-        where T : FreshbooksModel
-        where TF: FreshbooksFilter
-    {
-        
-    }
-
     public interface ICrudBasicApi<in T>
         where T : FreshbooksModel
     {       

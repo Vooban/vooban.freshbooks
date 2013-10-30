@@ -63,7 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericApi.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IFullBasicApi.cs" />
     <Compile Include="Models\FreshbooksCreateResponse.cs" />
     <Compile Include="Models\FreshbooksError.cs" />
     <Compile Include="Models\FreshbooksGetResponse.cs" />

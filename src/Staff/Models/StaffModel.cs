@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using HastyAPI;
 using Newtonsoft.Json;
 using Vooban.FreshBooks.DotNet.Api.Models;
@@ -102,7 +103,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
         /// </returns>
         public override dynamic ToFreshbooksDynamic()
         {
-            dynamic result = new FriendlyDynamic();
+            dynamic result = new ExpandoObject();
 
             if (!string.IsNullOrEmpty(Id)) result.staff_id = Id;
             if (!string.IsNullOrEmpty(Username)) result.username = Username;
@@ -164,6 +165,16 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
             };
         }
 
-       
+        #region Overrides
+
+        /// <summary>
+        /// Gets the name of the Freshbooks entity related to this model
+        /// </summary>
+        public override string FreshbooksEntityName
+        {
+            get { return "staff"; }
+        }
+
+        #endregion
     }
 }

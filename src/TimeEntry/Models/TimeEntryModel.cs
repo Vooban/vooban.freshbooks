@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using HastyAPI;
 using Vooban.FreshBooks.DotNet.Api.Models;
 
@@ -68,7 +69,7 @@ namespace Vooban.FreshBooks.DotNet.Api.TimeEntry.Models
         /// <returns>The dynamic object to be sent to Freshbooks</returns>
         public override dynamic ToFreshbooksDynamic()
         {
-            dynamic result = new FriendlyDynamic();
+            dynamic result = new ExpandoObject();
 
             if (!string.IsNullOrEmpty(Id)) result.time_entry_id = Id;
             if (!string.IsNullOrEmpty(StaffId)) result.staff_id = StaffId;
@@ -103,6 +104,18 @@ namespace Vooban.FreshBooks.DotNet.Api.TimeEntry.Models
                 Date = FreshbooksConvert.ToDateTime(entry.date),
                 Billed = FreshbooksConvert.ToBoolean(entry.billed),
             };
+        }
+
+        #endregion
+
+        #region Overrides
+
+        /// <summary>
+        /// Gets the name of the Freshbooks entity related to this model
+        /// </summary>
+        public override string FreshbooksEntityName
+        {
+            get { return "time_entry"; }
         }
 
         #endregion
