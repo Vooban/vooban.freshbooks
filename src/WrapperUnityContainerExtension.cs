@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using Microsoft.Practices.Unity;
 using Vooban.FreshBooks.DotNet.Api.Staff;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry;
+using Vooban.FreshBooks.DotNet.Api.TimeEntry.Models;
 
 namespace Vooban.FreshBooks.DotNet.Api
 {
@@ -22,7 +24,7 @@ namespace Vooban.FreshBooks.DotNet.Api
             Container.RegisterInstance(freshbooksInstance, new ContainerControlledLifetimeManager());
 
             Container.RegisterType<StaffApi>();
-            Container.RegisterType<SimplifiedStaffApi>();
+            Container.RegisterType<TimeEntryApi>();
         }
     }
 }

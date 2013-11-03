@@ -64,17 +64,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenericApi.cs" />
+    <Compile Include="GenericApiOptions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IFullBasicApi.cs" />
+    <Compile Include="ISearchableBasicApi.cs" />
     <Compile Include="Models\FreshbooksCreateResponse.cs" />
     <Compile Include="Models\FreshbooksError.cs" />
     <Compile Include="Models\FreshbooksGetResponse.cs" />
     <Compile Include="Models\FreshbooksObject.cs" />
     <Compile Include="Models\FreshbooksPagedResponse.cs" />
     <Compile Include="Models\FreshbooksResponse.cs" />
-    <Compile Include="BaseApi.cs" />
+    <Compile Include="GenericApiBase.cs" />
     <Compile Include="Staff\Models\StaffFilter.cs" />
-    <Compile Include="Staff\SimplifiedStaffApi.cs" />
     <Compile Include="Staff\StaffApi.cs" />
     <Compile Include="Staff\Models\StaffAddressModel.cs" />
     <Compile Include="Staff\Models\StaffModel.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="IReadOnlyBasicApi.cs" />
     <Compile Include="TimeEntry\Models\TimeEntryFilter.cs" />
     <Compile Include="TimeEntry\Models\TimeEntryModel.cs" />
-    <Compile Include="TimeEntry\SimplifiedTimeEntryApi.cs" />
     <Compile Include="TimeEntry\TimeEntryApi.cs" />
     <Compile Include="WrapperUnityContainerExtension.cs" />
   </ItemGroup>

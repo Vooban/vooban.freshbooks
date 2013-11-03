@@ -19,7 +19,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
 
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallSearch(new TimeEntryFilter() { ProjectId = "3228" });
+                var result = testedClass.Search(new TimeEntryFilter { ProjectId = "3228" });
                 Assert.NotNull(result);
                 Assert.True(result.Success, "The Freshbooks response indicated a fail");
             }
@@ -27,17 +27,15 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
 
         public class CallCreate
         {
-            [Fact]
-            public void WorksAsExpected()
+            [Fact]            
+          public void WorksAsExpected()
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallCreate(new TimeEntryModel() { TaskId = "999999", Hours = 25d});
-                Assert.NotNull(result);
-                Assert.False(result.Success);
+                Assert.Throws<InvalidOperationException>(() => testedClass.Create(new TimeEntryModel { TaskId = "999999", Hours = 25d}));
             }
-        }
+ }
 
         public class CallGetList
         {
@@ -48,7 +46,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
 
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallGetList();
+                var result = testedClass.GetList();
                 Assert.NotNull(result);
                 Assert.True(result.Success);
             }
@@ -63,7 +61,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.TimeEntry
 
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.CallGet("581167");
+                var result = testedClass.Get("581167");
                 Assert.NotNull(result);
             }
         }

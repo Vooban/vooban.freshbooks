@@ -13,7 +13,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
-        FreshbooksCreateResponse CallCreate(T entity);
+        string Create(T entity);
 
         /// <summary>
         /// Creates a new entry in Freshbooks
@@ -23,7 +23,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
-        FreshbooksResponse CallUpdate(T entity);
+        void Update(T entity);
 
         /// <summary>
         /// Creates a new entry in Freshbooks
@@ -35,7 +35,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        FreshbooksResponse CallDelete(T entity);
+        void Delete(T entity);
 
         /// <summary>
         /// Creates a new entry in Freshbooks
@@ -47,6 +47,6 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        FreshbooksResponse CallDelete(string id);
-    }
+        void Delete(string id);
+  }
 }

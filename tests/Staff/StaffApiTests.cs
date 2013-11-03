@@ -35,7 +35,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
 
                 var testedClass = new StaffApi(freshbooks);
 
-                var result = testedClass.CallGet("1");
+                var result = testedClass.Get("1");
                 Assert.NotNull(result);
             }
         }
@@ -49,7 +49,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
 
                 var testedClass = new StaffApi(freshbooks);
 
-                var result = testedClass.CallGetList();
+                var result = testedClass.GetList();
                 Assert.NotNull(result);
 
                 Console.Write(JsonConvert.SerializeObject(result));
@@ -65,7 +65,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
 
                 var testedClass = new StaffApi(freshbooks);
 
-                var result = testedClass.CallGetAllPages();
+                var result = testedClass.GetAllPages();
                 Assert.NotNull(result);
             }
         }

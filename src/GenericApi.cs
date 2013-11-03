@@ -11,29 +11,41 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// <typeparam name="T">The type of model managed by the class instance</typeparam>
     /// <typeparam name="TF">The type of filter used to search Freshbooks for this API</typeparam>
     /// <remarks>The child classes can return null to command the API does not implement</remarks>
-    public abstract class GenericApi<T, TF> :
-        BaseApi<T>, IFullBasicApi<T, TF>
+    public class GenericApi<T, TF> :
+        GenericApiBase<T>, IFullBasicApi<T, TF>
         where T : FreshbooksModel
         where TF : FreshbooksFilter
     {
+        #region Private Members
+
+        private readonly GenericApiOptions<T> _options;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericApi{T, TF}"/> class.
+        /// Initializes a new instance of the <see cref="GenericApi{T, TF}" /> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use as a <c>Lazy</c> instance.</param>
+        /// <param name="options">The options used by this class.</param>
         [InjectionConstructor]
-        protected GenericApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks) 
+        public GenericApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks, GenericApiOptions<T> options)
             : base(freshbooks)
-        { }
+        {
+            _options = options;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericApi{T, TF}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use.</param>
-        protected GenericApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
+        /// <param name="options">The options used by this class.</param>
+        public GenericApi(HastyAPI.FreshBooks.FreshBooks freshbooks, GenericApiOptions<T> options)
             : base(freshbooks)
-        { }
+        {
+            _options = options;
+        }
 
         #endregion
 
@@ -46,10 +58,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>
         /// The <see cref="T" /> information for the specified <paramref name="id" />
         /// </returns>
-        public FreshbooksGetResponse<T> CallGet(string id)
-        {
-            if (!string.IsNullOrEmpty(GetCommand))
-                return CallGetMethod(GetCommand, p => ((IDictionary<string, object>)p)[IdProperty] = id, r => FromDynamicModel(r));
+        public T Get(string id)
+      {
+            if (!string.IsNullOrEmpty(_options.GetCommand))
+                return CallGetMethod(_options.GetCommand, p => ((IDictionary<string, object>)p)[_options.IdProperty] = id, r => _options.FromDynamicModel(r));
 
             throw new NotSupportedException("The [get] operation is not supported");
         }
@@ -67,10 +79,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage
         /// </exception>
-        public FreshbooksPagedResponse<T> CallGetList(int page = 1, int itemPerPage = 100)
-        {
-            if (!string.IsNullOrEmpty(ListCommand))
-                return CallGetListMethod(ListCommand, r => BuildEnumerableFromDynamicResult(r), null, page, itemPerPage);
+        public FreshbooksPagedResponse<T> GetList(int page = 1, int itemPerPage = 100)
+      {
+            if (!string.IsNullOrEmpty(_options.ListCommand))
+                return CallGetListMethod(_options.ListCommand, r => _options.BuildEnumerableFromDynamicResult(r), null, page, itemPerPage);
 
             throw new NotSupportedException("The [list] operation is not supported");
         }
@@ -82,10 +94,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the api.list method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        public IEnumerable<FreshbooksPagedResponse<T>> CallGetAllPages()
-        {
-            if (!string.IsNullOrEmpty(ListCommand))
-                return CallGetAllPagesMethod(ListCommand, r => BuildEnumerableFromDynamicResult(r));
+        public IEnumerable<T> GetAllPages()
+      {
+            if (!string.IsNullOrEmpty(_options.ListCommand))
+                return CallGetAllPagesMethod(_options.ListCommand, r => _options.BuildEnumerableFromDynamicResult(r));
 
             throw new NotSupportedException("The [list] operation is not supported");
         }
@@ -98,10 +110,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
-        public FreshbooksCreateResponse CallCreate(T entity)
+        public string Create(T entity)
         {
-            if (!string.IsNullOrEmpty(CreateCommand))
-                return CallCreateMethod(CreateCommand, entity, createResponse => (string) ((IDictionary<string, object>) createResponse.response)[IdProperty]);
+            if (!string.IsNullOrEmpty(_options.CreateCommand))
+                return CallCreateMethod(_options.CreateCommand, entity, createResponse => (string)((IDictionary<string, object>)createResponse.response)[_options.IdProperty]);
 
             throw new NotSupportedException("The [create] operation is not supported");
         }
@@ -114,10 +126,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
-        public FreshbooksResponse CallUpdate(T entity)
+        public void Update(T entity)
         {
-            if (!string.IsNullOrEmpty(UpdateCommand))
-                return CallUpdateMethod(UpdateCommand, entity);
+            if (!string.IsNullOrEmpty(_options.UpdateCommand))
+                CallUpdateMethod(_options.UpdateCommand, entity);
 
             throw new NotSupportedException("The [update] operation is not supported");
         }
@@ -132,10 +144,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public FreshbooksResponse CallDelete(T entity)
+        public void Delete(T entity)
         {
-            if (!string.IsNullOrEmpty(DeleteCommand))
-                return CallDeleteMethod(DeleteCommand, IdProperty, entity.Id);
+            if (!string.IsNullOrEmpty(_options.DeleteCommand))
+                CallDeleteMethod(_options.DeleteCommand, _options.IdProperty, entity.Id);
 
             throw new NotSupportedException("The [delete] operation is not supported");
         }
@@ -150,12 +162,12 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public FreshbooksResponse CallDelete(string id)
-        {
-            if (!string.IsNullOrEmpty(DeleteCommand))
-                return CallDeleteMethod(DeleteCommand, IdProperty, id);
+        public void Delete(string id)
+      {
+            if (!string.IsNullOrEmpty(_options.DeleteCommand))
+                CallDeleteMethod(_options.DeleteCommand, _options.IdProperty, id);
 
-            throw new NotSupportedException("The [delete] operation is not supported");
+        throw new NotSupportedException("The [delete] operation is not supported");
         }
 
         /// <summary>
@@ -170,10 +182,10 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
-        public FreshbooksPagedResponse<T> CallSearch(TF template, int page = 1, int itemPerPage = 100)
-        {
-            if (!string.IsNullOrEmpty(ListCommand))
-                return CallSearchMethod(ListCommand, r => BuildEnumerableFromDynamicResult(r), template, page, itemPerPage);
+        public FreshbooksPagedResponse<T> Search(TF template, int page = 1, int itemPerPage = 100)
+      {
+            if (!string.IsNullOrEmpty(_options.ListCommand))
+                return CallSearchMethod(_options.ListCommand, r => _options.BuildEnumerableFromDynamicResult(r), template, page, itemPerPage);
 
             throw new NotSupportedException("The [search] operation is not supported");
         }
@@ -190,70 +202,13 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
-        public IEnumerable<FreshbooksPagedResponse<T>> CallSearchAll(TF template, int page = 1, int itemPerPage = 100)
-        {
-            if (!string.IsNullOrEmpty(ListCommand))
-                return CallSearchAllMethod(ListCommand, r => BuildEnumerableFromDynamicResult(r), template);
+        public IEnumerable<T> SearchAll(TF template, int page = 1, int itemPerPage = 100)
+      {
+            if (!string.IsNullOrEmpty(_options.ListCommand))
+                return CallSearchAllMethod(_options.ListCommand, r => _options.BuildEnumerableFromDynamicResult(r), template);
 
             throw new NotSupportedException("The [search all] operation is not supported");
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the name of the id property used with this entity
-        /// </summary>
-        protected abstract string IdProperty { get; }
-
-        /// <summary>
-        /// Gets the Freshbooks delete command name
-        /// </summary>
-        /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
-        protected abstract string DeleteCommand { get; }
-
-        /// <summary>
-        /// Gets the Freshbooks update command name
-        /// </summary>
-        /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
-        protected abstract string UpdateCommand { get; }
-
-        /// <summary>
-        /// Gets the Freshbooks create command name
-        /// </summary>
-        /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
-        protected abstract string CreateCommand { get; }
-
-        /// <summary>
-        /// Gets the Freshbooks get command name
-        /// </summary>
-        /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
-        protected abstract string GetCommand { get; }
-
-        /// <summary>
-        /// Gets the Freshbooks list command name
-        /// </summary>
-        /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
-        protected abstract string ListCommand { get; }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Creates an entity of type <see cref="T"/> from the Freshbooks dynamic response
-        /// </summary>
-        /// <param name="response">The response received from Freshbooks</param>
-        /// <returns>The fully loaded entity</returns>
-        protected abstract T FromDynamicModel(dynamic response);
-
-        /// <summary>
-        /// Enumerates over the list response of the Freshbooks API
-        /// </summary>
-        /// <param name="response">The Freshbooks response</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> all loaded correctly</returns>
-        protected abstract IEnumerable<T> BuildEnumerableFromDynamicResult(dynamic response);
 
         #endregion
     }

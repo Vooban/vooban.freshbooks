@@ -12,7 +12,7 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// Base API class allowing an easy development of Freshbooks API ressources
     /// </summary>
     /// <typeparam name="T">The type of model manipulated by this class</typeparam>
-    public abstract class BaseApi<T> 
+    public abstract class GenericApiBase<T> 
         where T : FreshbooksModel
     {
         #region Private members
@@ -27,20 +27,20 @@ namespace Vooban.FreshBooks.DotNet.Api
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApi{T}"/> class.
+        /// Initializes a new instance of the <see cref="GenericApiBase{T}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use as a <c>Lazy</c> instance.</param>
         [InjectionConstructor]
-        protected BaseApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
+        protected GenericApiBase(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
         {
             _freshbooks = freshbooks;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseApi{T}"/> class.
+        /// Initializes a new instance of the <see cref="GenericApiBase{T}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use.</param>
-        protected BaseApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
+        protected GenericApiBase(HastyAPI.FreshBooks.FreshBooks freshbooks)
         {
             _freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(()=>freshbooks);
         }
@@ -65,7 +65,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
-        protected FreshbooksCreateResponse CallCreateMethod(string apiName, T entity, Func<dynamic, string> idBuilder) 
+        protected string CallCreateMethod(string apiName, T entity, Func<dynamic, string> idBuilder)
         {
             if(entity.Id != null)
                 throw new InvalidOperationException("Cannot call the <create> operation using an entity with an Id");
@@ -74,10 +74,12 @@ namespace Vooban.FreshBooks.DotNet.Api
 
             var response = (FreshbooksCreateResponse)FreshbooksConvert.ToCreateResponse(callResult);
 
-            if (response.Success)
-                return (FreshbooksCreateResponse)response.WithResult(idBuilder(callResult));
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
 
-            return response;
+            var result = (FreshbooksCreateResponse)response.WithResult(idBuilder(callResult));
+
+            return result.Id;
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
-        protected FreshbooksResponse CallUpdateMethod(string apiName, T entity)
+        protected void CallUpdateMethod(string apiName, T entity)
         {
             if (string.IsNullOrEmpty(entity.Id))
                 throw new InvalidOperationException("Cannot call the <update> operation using an entity without an Id");
@@ -97,9 +99,11 @@ namespace Vooban.FreshBooks.DotNet.Api
             var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a).Add(entity.FreshbooksEntityName, entity.ToFreshbooksDynamic()));
 
             var response = (FreshbooksResponse)FreshbooksConvert.ToCreateResponse(callResult);
-
-            return response;
+            
+            if (!response.Success)            
+                throw new InvalidOperationException(response.Error.ToString());
         }
+
 
         /// <summary>
         /// Creates a new entry in Freshbooks
@@ -115,7 +119,7 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier
         /// </exception>
-        protected FreshbooksResponse CallDeleteMethod(string apiName, string idName, string idValue)
+        protected void CallDeleteMethod(string apiName, string idName, string idValue)
         {
             if (string.IsNullOrEmpty(idValue))
                 throw new InvalidOperationException("Cannot call the <delete> operation using an empty Id");
@@ -127,7 +131,8 @@ namespace Vooban.FreshBooks.DotNet.Api
 
             var response = (FreshbooksResponse)FreshbooksConvert.ToCreateResponse(callResult);
 
-            return response;
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
         }
 
         /// <summary>
@@ -138,13 +143,18 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>
         /// The <see cref="T" /> information from the call
         /// </returns>
-        protected FreshbooksGetResponse<T> CallGetMethod(string apiName, Func<dynamic, T> resultBuilder)
+        public T CallGetMethod(string apiName, Func<dynamic, T> resultBuilder)
         {
             var callResult = FreshbooksClient.Call(apiName);
 
             var response = FreshbooksConvert.ToGetResponse<T>(callResult);
 
-            return (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
+
+            var result = (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
+
+            return result.Result;            
         }
 
         /// <summary>
@@ -156,13 +166,18 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <returns>
         /// The <see cref="T" /> information for the specified parameters
         /// </returns>
-        protected FreshbooksGetResponse<T> CallGetMethod(string apiName, Action<dynamic> parameterBuilder, Func<dynamic, T> resultBuilder)
+        public T CallGetMethod(string apiName, Action<dynamic> parameterBuilder, Func<dynamic, T> resultBuilder)
         {
             var callResult = FreshbooksClient.Call(apiName, parameterBuilder);
 
             var response = FreshbooksConvert.ToGetResponse<T>(callResult);
 
-            return (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
+
+            var result = (FreshbooksGetResponse<T>)response.WithResult(resultBuilder(callResult));
+
+            return result.Result;
         }
 
         /// <summary>
@@ -198,16 +213,19 @@ namespace Vooban.FreshBooks.DotNet.Api
 
             Action<dynamic> pbuilder = p => Combine(p, parameter, paging);
            
-// ReSharper disable RedundantAssignment
+            // ReSharper disable RedundantAssignment
             var callListResult = FreshbooksClient.Call(apiName, pbuilder);
-// ReSharper restore RedundantAssignment
+            // ReSharper restore RedundantAssignment
 
             var response = (FreshbooksPagedResponse<T>)FreshbooksConvert.ToPagedResponse<T>(callListResult);
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
 
-            return response.WithResult((IEnumerable<T>)resultBuilder(callListResult));
+            var result = response.WithResult((IEnumerable<T>)resultBuilder(callListResult));
+            return result;
         }
 
-        /// <summary>
+      /// <summary>
         /// Allows one to search based on object template
         /// </summary>
         /// <param name="apiName">The name of the API to call</param>
@@ -236,9 +254,12 @@ namespace Vooban.FreshBooks.DotNet.Api
             // ReSharper restore RedundantAssignment
 
             var response = (FreshbooksPagedResponse<T>)FreshbooksConvert.ToPagedResponse<T>(callListResult);
+            if (!response.Success)
+                throw new InvalidOperationException(response.Error.ToString());
 
-            return response.WithResult((IEnumerable<T>)resultBuilder(callListResult));
-        }
+            var result = response.WithResult((IEnumerable<T>)resultBuilder(callListResult));
+            return result;
+       }
 
         /// <summary>
         /// Get all the staff member available on Freshbooks with a single API call.
@@ -247,24 +268,27 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        protected IEnumerable<FreshbooksPagedResponse<T>> CallGetAllPagesMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder)
+        protected IEnumerable<T> CallGetAllPagesMethod(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder)
         {
-            var result = new List<FreshbooksPagedResponse<T>>();
+            var result = new List<T>();
             var response = CallGetListMethod(apiName, resultBuilder);
             if (response.Success)
             {
                 // Add items obtained from the first page
-                result.Add(response);
+                result.AddRange(response.Result);
 
                 // Add items for remaining pages                
-                for (int i = 2; i <= response.TotalPages; i++)
+                for (var i = 2; i <= response.TotalPages; i++)
                 {
                     response = CallGetListMethod(apiName, resultBuilder, null, i);
-                    result.Add(response);
+                    if (!response.Success)
+                        throw new InvalidOperationException(response.Error.ToString());
+
+                    result.AddRange(response.Result);
                 }
-            }
+         }
             else
-                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Success));
+                throw new InvalidOperationException(response.Error.ToString());         
 
             return result;
         }
@@ -276,29 +300,34 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// This method call the <c>staff.list</c> method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        protected IEnumerable<FreshbooksPagedResponse<T>> CallSearchAllMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template) where TF : FreshbooksFilter
+        protected IEnumerable<T> CallSearchAllMethod<TF>(string apiName, Func<dynamic, IEnumerable<T>> resultBuilder, TF template) where TF : FreshbooksFilter
         {
-            var result = new List<FreshbooksPagedResponse<T>>();
+            var result = new List<T>();
             var response = CallSearchMethod(apiName, resultBuilder, template);
             if (response.Success)
             {
                 // Add items obtained from the first page
-                result.Add(response);
+                result.AddRange(response.Result);
 
                 // Add items for remaining pages                
                 for (int i = 2; i <= response.TotalPages; i++)
                 {
                     response = CallSearchMethod(apiName, resultBuilder, template, i);
-                    result.Add(response);
+                    if (!response.Success)
+                        throw new InvalidOperationException(response.Error.ToString());
+
+                    result.AddRange(response.Result);
                 }
             }
             else
-                throw new InvalidProgramException(string.Format("Freshbooks API failed with status code : {0}", response.Success));
+                throw new InvalidOperationException(response.Error.ToString());         
 
             return result;
         }
 
         #endregion
+
+        #region Private Methods
 
         static dynamic Combine(dynamic item1, dynamic item2, dynamic item3)
         {
@@ -313,5 +342,7 @@ namespace Vooban.FreshBooks.DotNet.Api
 
             return dictionary1;
         }
+
+        #endregion
     }
 }
