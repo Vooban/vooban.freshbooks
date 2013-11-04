@@ -15,55 +15,55 @@ The library is build to be dependecy injection friendly and does include a [Unit
 ### Basic API ###
 The basic API returns results wrapped inside a Freshbooks response object that you can inspect and work with.
 
-#### This is a very basic exemple without any DI support ####
-```
-var freshbooks = new Freshbooks("username", "token");
-
-var testedClass = new StaffApi(freshbooks);
-
-var currentStaffResponse = testedClass.CallGetCurrent();
-if(currentStaffResponse.Status)
-{
-    var currentStaff = currentStaffResponse.Result;
-    ...
-}
+#### This is a very basic exemple ####
 ```
 
-#### This is an exemple with DI support ####
-If you make use of **Dependency Injection** then there is no need to wire the Freshbooks clients yourselves, just setup your **username** [FreshbooksUsername] and **token** [FreshbooksApiToken] in the appSettings section of your app.config and you are good to go.
-```
-var testedClass = Container.Resolve<StaffApi>();
-
-var currentStaffResponse = testedClass.CallGetCurrent();
-if(currentStaffResponse.Status)
-{
-    var currentStaff = currentStaffResponse.Result;
-    ...
-}
-```
-
-### Simplified API ###
-The simplified API classes returns Models instead of Freshbooks responses and throws exception when the Freshbooks API fails.
-
-#### This is a very basic exemple without any DI support ####
-```
-var freshbooks = new Freshbooks("username", "token");
-
-var testedClass = new SimplifiedStaffApi(freshbooks);
-
-var currentStaff = testedClass.Current;
-var specificStaff = testedClass.Get("1234);
-var allStaff = testedClass.GetAll();
-```
-
-#### This is an exemple with DI support ####
-If you make use of **Dependency Injection** then there is no need to wire the Freshbooks clients yourselves, just setup your **username** [FreshbooksUsername] and **token** [FreshbooksApiToken] in the appSettings section of your app.config and you are good to go.
-```
-var testedClass = Container.Resolve<StaffApi>();
-
-var currentStaff = testedClass.Current;
-var specificStaff = testedClass.Get("1234);
-var allStaff = testedClass.GetAll();
+    var freshbooks = new Freshbooks("username", "token");
+    
+    var testedClass = new StaffApi(freshbooks);
+    
+    var currentStaffResponse = testedClass.CallGetCurrent();
+    if(currentStaffResponse.Status)
+    {
+        var currentStaff = currentStaffResponse.Result;
+        ...
+    }
 
 ```
 
+#### Getting list of items ####
+This methods allows you to get a list of items from Freshbooks. This methods supports paging, so you can passing the page number and number of items per page you want to get. In the following example, we're asking for the first page, with 25 items per page.
+
+```
+
+	var freshbooks = new Freshbooks("username", "token");
+    var testedClass = new StaffApi(freshbooks);
+    FreshbooksPagedResponse<StaffModel> result = testedClass.GetList(1, 25);
+
+	if(result.Success)
+	{
+		var totalItems = result.TotalItems;
+		var totalPages = result.TotalPages;
+		var itemPerPages = result.ItemsPerPage;
+		var currentPage = result.Page;
+
+		var currentPageItems = result.Result;
+		// Iterate over the results
+		foreach(var staff in result)
+			// TODO: Your code here
+	}
+
+```
+
+#### Getting all pages at once ####
+```
+
+	var freshbooks = new Freshbooks("username", "token");
+    var testedClass = new StaffApi(freshbooks);
+    IEnumerable<StaffModel> result = testedClass.GetAllPages();
+
+	// Iterate over the results
+	foreach(var staff in result)
+		// TODO: Your code here
+
+```

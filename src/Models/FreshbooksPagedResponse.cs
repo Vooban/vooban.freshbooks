@@ -15,7 +15,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
         /// <summary>
         /// Gets the number of items per page
         /// </summary>
-        public int ItemPerPage { get; internal set; }
+        public int ItemsPerPage { get; internal set; }
 
         /// <summary>
         /// Get the total number of pages available in Freshbooks
@@ -50,7 +50,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Models
             if (inner == null)
                 throw new ArgumentNullException("inner","Invalid basic response");
             Page = inner.Page;
-            ItemPerPage = inner.ItemPerPage;
+            ItemsPerPage = inner.ItemsPerPage;
             TotalPages = inner.TotalPages;
             TotalItems = inner.TotalItems;
         }

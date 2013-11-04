@@ -242,7 +242,7 @@ namespace Vooban.FreshBooks.DotNet.Api
                     var response = new FreshbooksPagedResponse(ToResponse(value))
                     {
                         Page = page.HasValue ? page.Value : 1,
-                        ItemPerPage = itemPerPage.HasValue ? itemPerPage.Value : 100,
+                        ItemsPerPage = itemPerPage.HasValue ? itemPerPage.Value : 100,
                         TotalPages = totalPages.HasValue ? totalPages.Value : 1,
                         TotalItems = totalItems.HasValue ? totalItems.Value : 0
                     };
