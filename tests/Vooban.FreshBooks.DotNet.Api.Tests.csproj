@@ -35,11 +35,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HastyAPI">
-      <HintPath>..\packages\HastyAPI.1.0.10.0\lib\net40\HastyAPI.dll</HintPath>
+    <Reference Include="HastyAPI, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HastyAPI.1.0.11.0\lib\net40\HastyAPI.dll</HintPath>
     </Reference>
-    <Reference Include="HastyAPI.FreshBooks">
-      <HintPath>..\packages\HastyFreshBooks.1.0.2.0\lib\net40\HastyAPI.FreshBooks.dll</HintPath>
+    <Reference Include="HastyAPI.FreshBooks, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HastyFreshBooks.1.0.5.0\lib\net40\HastyAPI.FreshBooks.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
