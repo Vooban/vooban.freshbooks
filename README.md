@@ -17,53 +17,44 @@ The basic API returns results wrapped inside a Freshbooks response object that y
 
 #### This is a very basic exemple ####
 ```
+var freshbooks = new Freshbooks("username", "token");
 
-    var freshbooks = new Freshbooks("username", "token");
-    
-    var testedClass = new StaffApi(freshbooks);
-    
-    var currentStaffResponse = testedClass.CallGetCurrent();
-    if(currentStaffResponse.Status)
-    {
-        var currentStaff = currentStaffResponse.Result;
-        ...
-    }
+var testedClass = new StaffApi(freshbooks);
 
+var currentStaff = testedClass.GetCurrent();
+
+// TODO : Work with the strongly typed StaffModel object
 ```
 
 #### Getting list of items ####
 This methods allows you to get a list of items from Freshbooks. This methods supports paging, so you can passing the page number and number of items per page you want to get. In the following example, we're asking for the first page, with 25 items per page.
 
 ```
+var freshbooks = new Freshbooks("username", "token");
+var testedClass = new StaffApi(freshbooks);
+FreshbooksPagedResponse<StaffModel> result = testedClass.GetList(1, 25);
 
-	var freshbooks = new Freshbooks("username", "token");
-    var testedClass = new StaffApi(freshbooks);
-    FreshbooksPagedResponse<StaffModel> result = testedClass.GetList(1, 25);
+if(result.Success)
+{
+	var totalItems = result.TotalItems;
+	var totalPages = result.TotalPages;
+	var itemPerPages = result.ItemsPerPage;
+	var currentPage = result.Page;
 
-	if(result.Success)
-	{
-		var totalItems = result.TotalItems;
-		var totalPages = result.TotalPages;
-		var itemPerPages = result.ItemsPerPage;
-		var currentPage = result.Page;
-
-		var currentPageItems = result.Result;
-		// Iterate over the results
-		foreach(var staff in result)
-			// TODO: Your code here
-	}
-
+	var currentPageItems = result.Result;
+	// Iterate over the results
+	foreach(var staff in result)
+		// TODO: Your code here
+}
 ```
 
 #### Getting all pages at once ####
 ```
+var freshbooks = new Freshbooks("username", "token");
+var testedClass = new StaffApi(freshbooks);
+IEnumerable<StaffModel> result = testedClass.GetAllPages();
 
-	var freshbooks = new Freshbooks("username", "token");
-    var testedClass = new StaffApi(freshbooks);
-    IEnumerable<StaffModel> result = testedClass.GetAllPages();
-
-	// Iterate over the results
-	foreach(var staff in result)
-		// TODO: Your code here
-
+// Iterate over the results
+foreach(var staff in result)
+	// TODO: Your code here
 ```
