@@ -6,7 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace Vooban.FreshBooks.DotNet.Api.Tests
+namespace FreshBooks.Api.Tests
 {
     public class FreshbooksConvertTests
     {
@@ -298,8 +298,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
             [Fact]
             public void NullDynamicValueReturnsNull()
             {
-                Assert.Null(FreshbooksConvert.ToGetResponse<String>(null));
-                
+                Assert.Throws<ArgumentNullException>(()=> FreshbooksConvert.ToGetResponse<String>(null));                
             }
 
             [Fact]
@@ -309,7 +308,7 @@ namespace Vooban.FreshBooks.DotNet.Api.Tests
 
                 var result = FreshbooksConvert.ToGetResponse<String>(value);
                 
-                Assert.True(result.Status);                
+                Assert.True(result.Success);                
             }
         }
     }

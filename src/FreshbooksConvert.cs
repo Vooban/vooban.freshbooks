@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using HastyAPI;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace FreshBooks.Api
 {
     /// <summary>
     /// Helper class to facilitate conversion from Freshbooks to the .NET world
@@ -173,8 +173,11 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// <param name="value">The dynamic response from Freshbooks</param>
         /// <returns>The prepolulated response status</returns>
         public static FreshbooksGetResponse<T> ToGetResponse<T>(dynamic value)
-        {            
-            return  new FreshbooksGetResponse<T>(ToResponse(value));
+        {
+            if (value!=null)
+                return  new FreshbooksGetResponse<T>(ToResponse(value));
+
+            throw new ArgumentNullException("value", "freshbooks response cannot be an null value");
         }
 
         /// <summary>

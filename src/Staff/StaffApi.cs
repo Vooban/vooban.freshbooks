@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Unity;
-using Vooban.FreshBooks.DotNet.Api.Models;
-using Vooban.FreshBooks.DotNet.Api.Staff.Models;
+using FreshBooks.Api.Models;
+using FreshBooks.Api.Staff.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.Staff
+namespace FreshBooks.Api.Staff
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.
     /// </summary>
-    public class StaffApi : IReadOnlyBasicApi<StaffModel>
+    public class StaffApi : IStaffApi
     {
         #region Private Classes
 
@@ -124,7 +123,6 @@ namespace Vooban.FreshBooks.DotNet.Api.Staff
 
         #region Constructors
 
-        [InjectionConstructor]
         public StaffApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
         {
             _options = new StaffApiOptions();

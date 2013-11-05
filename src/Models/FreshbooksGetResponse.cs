@@ -1,4 +1,4 @@
-﻿namespace Vooban.FreshBooks.DotNet.Api.Models
+﻿namespace FreshBooks.Api.Models
 {
     /// <summary>
     /// Freshbooks response for <c>GET</c> operations on the Freshbooks API

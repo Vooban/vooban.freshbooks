@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HastyAPI.FreshBooks.Wrapper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Freshbooks.API")]
+[assembly: AssemblyDescription("A Freshbooks client for the .NET world")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HastyAPI.FreshBooks.Wrapper")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Vooban")]
+[assembly: AssemblyProduct("Freshbooks.API")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyTrademark("Strong Alone, Stronger Together")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -34,4 +34,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("Vooban.FreshBooks.DotNet.Api.Tests")]
+[assembly: InternalsVisibleTo("FreshBooks.Api.Tests")]

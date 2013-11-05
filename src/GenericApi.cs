@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Practices.Unity;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace FreshBooks.Api
 {
     /// <summary>
     /// Generic API implementing all the common features of a Freshbooks API
@@ -12,7 +11,7 @@ namespace Vooban.FreshBooks.DotNet.Api
     /// <typeparam name="TF">The type of filter used to search Freshbooks for this API</typeparam>
     /// <remarks>The child classes can return null to command the API does not implement</remarks>
     public class GenericApi<T, TF> :
-        GenericApiBase<T>, IFullBasicApi<T, TF>
+        GenericApiBase<T>, IFullApi<T, TF>
         where T : FreshbooksModel
         where TF : FreshbooksFilter
     {
@@ -29,7 +28,6 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use as a <c>Lazy</c> instance.</param>
         /// <param name="options">The options used by this class.</param>
-        [InjectionConstructor]
         public GenericApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks, GenericApiOptions<T> options)
             : base(freshbooks)
         {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace FreshBooks.Api
 {
     public class GenericApiOptions<T> where T: FreshbooksModel
     {

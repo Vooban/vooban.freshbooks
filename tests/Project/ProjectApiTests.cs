@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using FreshBooks.Api.Staff;
-using FreshBooks.Api.TimeEntry;
-using FreshBooks.Api.TimeEntry.Models;
-using Xunit;
-using FreshBooks.Api.Task;
-using System.Diagnostics;
 using FreshBooks.Api.Project;
+using FreshBooks.Api.Project.Models;
+using Xunit;
 
-namespace FreshBooks.Api.Tests.TimeEntry
+namespace FreshBooks.Api.Tests.Project
 {    
-    public class TimeEntryApiTests
+    public class ProjectApiTests
     {
         private static readonly string _username = Environment.GetEnvironmentVariable("FreshbooksUsername");
         private static readonly string _token = Environment.GetEnvironmentVariable("FreshbooksToken");
@@ -25,9 +17,9 @@ namespace FreshBooks.Api.Tests.TimeEntry
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new TimeEntryApi(freshbooks);
-                
-                var result = testedClass.Search(new TimeEntryFilter { ProjectId = "3228" });
+                var testedClass = new ProjectApi(freshbooks);
+
+                var result = testedClass.Search(new ProjectFilter { TaskId = "8" });
                 Assert.NotNull(result);
                 Assert.True(result.Success, "The Freshbooks response indicated a fail");
             }
@@ -39,9 +31,9 @@ namespace FreshBooks.Api.Tests.TimeEntry
           public void WorksAsExpected()
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
-                var testedClass = new TimeEntryApi(freshbooks);
+                var testedClass = new ProjectApi(freshbooks);
 
-                Assert.Throws<InvalidOperationException>(() => testedClass.Create(new TimeEntryModel { TaskId = "999999", Hours = 25d}));
+                Assert.Throws<InvalidOperationException>(() => testedClass.Create(new ProjectModel { Name = "Failing test"}));
             }
  }
 
@@ -52,7 +44,7 @@ namespace FreshBooks.Api.Tests.TimeEntry
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new TimeEntryApi(freshbooks);
+                var testedClass = new ProjectApi(freshbooks);
 
                 var result = testedClass.GetList();
                 Assert.NotNull(result);
@@ -67,9 +59,9 @@ namespace FreshBooks.Api.Tests.TimeEntry
             {
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
 
-                var testedClass = new TimeEntryApi(freshbooks);
+                var testedClass = new ProjectApi(freshbooks);
 
-                var result = testedClass.Get("581167");
+                var result = testedClass.Get("3");
                 Assert.NotNull(result);
             }
         }

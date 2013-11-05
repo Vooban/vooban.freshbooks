@@ -1,4 +1,4 @@
-﻿namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
+﻿namespace FreshBooks.Api.Staff.Models
 {
     /// <summary>
     /// This class model represent an address in the Freshbooks world. It can represent any address in Freshbooks

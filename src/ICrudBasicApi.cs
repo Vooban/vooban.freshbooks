@@ -1,6 +1,6 @@
-﻿using Vooban.FreshBooks.DotNet.Api.Models;
+﻿using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace FreshBooks.Api
 {
     public interface ICrudBasicApi<in T>
         where T : FreshbooksModel

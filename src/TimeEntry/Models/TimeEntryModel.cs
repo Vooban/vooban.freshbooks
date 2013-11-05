@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Dynamic;
 using HastyAPI;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.TimeEntry.Models
+namespace FreshBooks.Api.TimeEntry.Models
 {
     /// <summary>
     /// Represents a Freshbooks TimeEntry (time_entry)

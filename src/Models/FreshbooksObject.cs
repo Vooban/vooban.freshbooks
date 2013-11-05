@@ -1,4 +1,4 @@
-﻿namespace Vooban.FreshBooks.DotNet.Api.Models
+﻿namespace FreshBooks.Api.Models
 {
     public abstract class FreshbooksObject
     {

@@ -1,4 +1,4 @@
-﻿namespace Vooban.FreshBooks.DotNet.Api.Models
+﻿namespace FreshBooks.Api.Models
 {
     /// <summary>
     /// This class represents the base model for all Freshbooks response

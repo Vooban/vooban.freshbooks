@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using HastyAPI;
-using Microsoft.Practices.Unity;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api
+namespace FreshBooks.Api
 {
     /// <summary>
     /// Base API class allowing an easy development of Freshbooks API ressources
@@ -30,7 +29,6 @@ namespace Vooban.FreshBooks.DotNet.Api
         /// Initializes a new instance of the <see cref="GenericApiBase{T}"/> class.
         /// </summary>
         /// <param name="freshbooks">The freshbooks client to use as a <c>Lazy</c> instance.</param>
-        [InjectionConstructor]
         protected GenericApiBase(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks)
         {
             _freshbooks = freshbooks;

@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using FreshBooks.Api.Models;
-using FreshBooks.Api.TimeEntry.Models;
+using FreshBooks.Api.Project.Models;
 
-namespace FreshBooks.Api.TimeEntry
+namespace FreshBooks.Api.Project
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.
     /// </summary>
-    public class TimeEntryApi 
-        : ITimeEntryApi
+    public class ProjectApi 
+        : IProjectApi
     {
         #region Private Classes
 
-        public class TimeEntryApiOptions : GenericApiOptions<TimeEntryModel>
+        public class ProjectApiOptions : GenericApiOptions<ProjectModel>
         {
             #region Constantes
 
-            public const string COMMAND_TIMEENTRY_LIST = "time_entry.list";
-            public const string COMMAND_TIMEENTRY_GET = "time_entry.get";
-            public const string COMMAND_TIMEENTRY_DELETE = "time_entry.delete";
-            public const string COMMAND_TIMEENTRY_CREATE = "time_entry.create";
-            public const string COMMAND_TIMEENTRY_UPDATE = "time_entry.update";
+            public const string COMMAND_LIST = "project.list";
+            public const string COMMAND_GET = "project.get";
+            public const string COMMAND_DELETE = "project.delete";
+            public const string COMMAND_CREATE = "project.create";
+            public const string COMMAND_UPDATE = "project.update";
 
             #endregion
 
@@ -32,7 +32,7 @@ namespace FreshBooks.Api.TimeEntry
             /// </summary>
             public override string IdProperty
             {
-                get { return "time_entry_id"; }
+                get { return "project_id"; }
             }
 
             /// <summary>
@@ -41,7 +41,7 @@ namespace FreshBooks.Api.TimeEntry
             /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
             public override string DeleteCommand
             {
-                get { return COMMAND_TIMEENTRY_DELETE; }
+                get { return COMMAND_DELETE; }
             }
 
             /// <summary>
@@ -50,7 +50,7 @@ namespace FreshBooks.Api.TimeEntry
             /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
             public override string UpdateCommand
             {
-                get { return COMMAND_TIMEENTRY_UPDATE; }
+                get { return COMMAND_UPDATE; }
             }
 
             /// <summary>
@@ -59,7 +59,7 @@ namespace FreshBooks.Api.TimeEntry
             /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
             public override string CreateCommand
             {
-                get { return COMMAND_TIMEENTRY_CREATE; }
+                get { return COMMAND_CREATE; }
             }
 
             /// <summary>
@@ -68,7 +68,7 @@ namespace FreshBooks.Api.TimeEntry
             /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
             public override string GetCommand
             {
-                get { return COMMAND_TIMEENTRY_GET; }
+                get { return COMMAND_GET; }
             }
 
             /// <summary>
@@ -77,18 +77,18 @@ namespace FreshBooks.Api.TimeEntry
             /// <value>If the returned value is null, the delete command will fail with an <see cref="NotSupportedException"/></value>
             public override string ListCommand
             {
-                get { return COMMAND_TIMEENTRY_LIST; }
+                get { return COMMAND_LIST; }
             }
 
             /// <summary>
-            /// Creates an entity of type <see cref="TimeEntryModel"/> from the Freshbooks dynamic response
+            /// Creates an entity of type <see cref="ProjectModel"/> from the Freshbooks dynamic response
             /// </summary>
             /// <returns>The fully loaded entity</returns>
-            public override Func<dynamic, TimeEntryModel> FromDynamicModel
+            public override Func<dynamic, ProjectModel> FromDynamicModel
             {
                 get
                 {
-                    return d => TimeEntryModel.FromFreshbooksDynamic(d.response.time_entry);
+                    return d => ProjectModel.FromFreshbooksDynamic(d.response.project);
                 }
             }
 
@@ -96,23 +96,23 @@ namespace FreshBooks.Api.TimeEntry
             /// Enumerates over the list response of the Freshbooks API
             /// </summary>
             /// <returns>An <see cref="IEnumerable{TimeEntryModel}"/> all loaded correctly</returns>
-            public override Func<dynamic, IEnumerable<TimeEntryModel>> BuildEnumerableFromDynamicResult
+            public override Func<dynamic, IEnumerable<ProjectModel>> BuildEnumerableFromDynamicResult
             {
                 get
                 {
                     return resultList =>
                     {
-                        var result = new List<TimeEntryModel>();
+                        var result = new List<ProjectModel>();
 
-                        foreach (var item in resultList.response.time_entries.time_entry)
-                            result.Add(TimeEntryModel.FromFreshbooksDynamic(item));
+                        foreach (var item in resultList.response.projects.project)
+                            result.Add(ProjectModel.FromFreshbooksDynamic(item));
 
                         return result;
                     };
                 }
             }
 
-            public static TimeEntryApiOptions Options { get { return new TimeEntryApiOptions(); } }
+            public static ProjectApiOptions Options { get { return new ProjectApiOptions(); } }
 
             #endregion
         }
@@ -121,20 +121,20 @@ namespace FreshBooks.Api.TimeEntry
 
         #region Private Members
 
-        private readonly GenericApi<TimeEntryModel, TimeEntryFilter> _api;
+        private readonly GenericApi<ProjectModel, ProjectFilter> _api;
 
         #endregion
 
         #region Constructors
 
-        public TimeEntryApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks) 
+        public ProjectApi(Lazy<HastyAPI.FreshBooks.FreshBooks> freshbooks) 
         {
-            _api = new GenericApi<TimeEntryModel, TimeEntryFilter>(freshbooks, TimeEntryApiOptions.Options);
+            _api = new GenericApi<ProjectModel, ProjectFilter>(freshbooks, ProjectApiOptions.Options);
         }
 
-        public TimeEntryApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
+        public ProjectApi(HastyAPI.FreshBooks.FreshBooks freshbooks)
         {
-            _api = new GenericApi<TimeEntryModel, TimeEntryFilter>(freshbooks, TimeEntryApiOptions.Options);
+            _api = new GenericApi<ProjectModel, ProjectFilter>(freshbooks, ProjectApiOptions.Options);
         }
 
         #endregion
@@ -149,7 +149,7 @@ namespace FreshBooks.Api.TimeEntry
         /// The <see cref="FreshbooksCreateResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
-        public string Create(TimeEntryModel entity)
+        public string Create(ProjectModel entity)
         {
             return _api.Create(entity);
       }
@@ -162,7 +162,7 @@ namespace FreshBooks.Api.TimeEntry
         /// The <see cref="FreshbooksResponse" /> correctly populated with Freshbooks official response
         /// </returns>
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
-        public void Update(TimeEntryModel entity)
+        public void Update(ProjectModel entity)
         {
             _api.Update(entity);
       }
@@ -177,7 +177,7 @@ namespace FreshBooks.Api.TimeEntry
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public void Delete(TimeEntryModel entity)
+        public void Delete(ProjectModel entity)
         {
             _api.Delete(entity);
         }
@@ -202,9 +202,9 @@ namespace FreshBooks.Api.TimeEntry
         /// </summary>
         /// <param name="id">The staff id that you want to get information for.</param>
         /// <returns>
-        /// The <see cref="TimeEntryModel" /> information for the specified <paramref name="id" />
+        /// The <see cref="ProjectModel" /> information for the specified <paramref name="id" />
         /// </returns>
-        public TimeEntryModel Get(string id)
+        public ProjectModel Get(string id)
         {
             return _api.Get(id);
         }
@@ -215,14 +215,14 @@ namespace FreshBooks.Api.TimeEntry
         /// <param name="page">The page you want to get.</param>
         /// <param name="itemPerPage">The number of item per page to get.</param>
         /// <returns>
-        /// The whole <see cref="FreshbooksPagedResponse{StaffModel}" /> containing paging information and result for the requested page.
+        /// The whole <see cref="FreshbooksPagedResponse{ProjectModel}" /> containing paging information and result for the requested page.
         /// </returns>
         /// <exception cref="System.ArgumentException">
         /// Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage
         /// </exception>
-        public FreshbooksPagedResponse<TimeEntryModel> GetList(int page = 1, int itemPerPage = 100)
+        public FreshbooksPagedResponse<ProjectModel> GetList(int page = 1, int itemPerPage = 100)
         {
             return _api.GetList(page, itemPerPage);
         }
@@ -234,7 +234,7 @@ namespace FreshBooks.Api.TimeEntry
         /// This method call the api.list method for each available pages and gather all that information into a single list
         /// </remarks>
         /// <returns>The entire content available on Freshbooks</returns>
-        public IEnumerable<TimeEntryModel> GetAllPages()
+        public IEnumerable<ProjectModel> GetAllPages()
         {
             return _api.GetAllPages();
         }
@@ -251,7 +251,7 @@ namespace FreshBooks.Api.TimeEntry
         /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
-        public FreshbooksPagedResponse<TimeEntryModel> Search(TimeEntryFilter template, int page = 1, int itemPerPage = 100)
+        public FreshbooksPagedResponse<ProjectModel> Search(ProjectFilter template, int page = 1, int itemPerPage = 100)
         {
             return _api.Search(template, page, itemPerPage);
         }
@@ -268,7 +268,7 @@ namespace FreshBooks.Api.TimeEntry
         /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
         /// or
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
-        public IEnumerable<TimeEntryModel> SearchAll(TimeEntryFilter template, int page = 1, int itemPerPage = 100)
+        public IEnumerable<ProjectModel> SearchAll(ProjectFilter template, int page = 1, int itemPerPage = 100)
         {
             return _api.SearchAll(template, page, itemPerPage);
         }

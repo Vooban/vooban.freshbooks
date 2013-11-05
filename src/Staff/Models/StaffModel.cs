@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Dynamic;
 using HastyAPI;
 using Newtonsoft.Json;
-using Vooban.FreshBooks.DotNet.Api.Models;
+using FreshBooks.Api.Models;
 
-namespace Vooban.FreshBooks.DotNet.Api.Staff.Models
+namespace FreshBooks.Api.Staff.Models
 {
     /// <summary>
     /// This class is the strongly-typed representation of the Freshbooks <c>Staff</c> entity

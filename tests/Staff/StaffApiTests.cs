@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Newtonsoft.Json;
-using Vooban.FreshBooks.DotNet.Api.Staff;
-using Vooban.FreshBooks.DotNet.Api.Staff.Models;
+using FreshBooks.Api.Staff;
+using FreshBooks.Api.Staff.Models;
 using Xunit;
 
-namespace Vooban.FreshBooks.DotNet.Api.Tests.Staff
+namespace FreshBooks.Api.Tests.Staff
 {    
     public class StaffApiTests
     {
