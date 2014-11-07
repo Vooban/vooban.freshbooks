@@ -1,4 +1,4 @@
-﻿namespace FreshBooks.Api.Models
+﻿namespace Vooban.FreshBooks.Models
 {
     public abstract class FreshbooksFilter : FreshbooksObject
     {}

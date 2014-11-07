@@ -1,8 +1,8 @@
 ﻿using System;
 using HastyAPI;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api.TimeEntry.Models
+namespace Vooban.FreshBooks.TimeEntry.Models
 {
     public class TimeEntryFilter : FreshbooksFilter
     {

@@ -1,4 +1,4 @@
-﻿namespace FreshBooks.Api.Models
+﻿namespace Vooban.FreshBooks.Models
 {
     /// <summary>
     /// Class providing information about Freshbooks API call errors

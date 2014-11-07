@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FreshBooks.Api.Models
+namespace Vooban.FreshBooks.Models
 {
     public class FreshbooksPagedResponse : FreshbooksResponse
     {

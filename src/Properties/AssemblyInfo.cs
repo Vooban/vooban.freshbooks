@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Freshbooks.API")]
+[assembly: AssemblyTitle("Vooban.FreshBooks")]
 [assembly: AssemblyDescription("A Freshbooks client for the .NET world")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vooban")]
-[assembly: AssemblyProduct("Freshbooks.API")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("Vooban.FreshBooks")]
+[assembly: AssemblyCopyright("Copyright © Vooban 2014")]
 [assembly: AssemblyTrademark("Strong Alone, Stronger Together")]
 [assembly: AssemblyCulture("")]
 
@@ -34,4 +34,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("FreshBooks.Api.Tests")]
+[assembly: InternalsVisibleTo("Vooban.FreshBooks.Tests")]

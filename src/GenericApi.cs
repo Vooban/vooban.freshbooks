@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api
+namespace Vooban.FreshBooks
 {
     /// <summary>
     /// Generic API implementing all the common features of a Freshbooks API

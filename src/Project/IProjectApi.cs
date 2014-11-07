@@ -1,6 +1,6 @@
-﻿using FreshBooks.Api.Project.Models;
+﻿using Vooban.FreshBooks.Project.Models;
 
-namespace FreshBooks.Api.Project
+namespace Vooban.FreshBooks.Project
 {
     public interface IProjectApi
         : IFullApi<ProjectModel, ProjectFilter>

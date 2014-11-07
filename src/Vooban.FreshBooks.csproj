@@ -7,8 +7,8 @@
     <ProjectGuid>{C5289539-9360-476C-9A7E-862124C40612}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FreshBooks.Api</RootNamespace>
-    <AssemblyName>FreshBooks.Api</AssemblyName>
+    <RootNamespace>Vooban.FreshBooks</RootNamespace>
+    <AssemblyName>Vooban.FreshBooks</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>

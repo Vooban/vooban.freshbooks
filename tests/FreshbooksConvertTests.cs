@@ -6,7 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace FreshBooks.Api.Tests
+namespace Vooban.FreshBooks.Tests
 {
     public class FreshbooksConvertTests
     {

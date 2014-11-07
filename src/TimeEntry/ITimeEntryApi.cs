@@ -1,6 +1,6 @@
-﻿using FreshBooks.Api.TimeEntry.Models;
+﻿using Vooban.FreshBooks.TimeEntry.Models;
 
-namespace FreshBooks.Api.TimeEntry
+namespace Vooban.FreshBooks.TimeEntry
 {
     public interface ITimeEntryApi
         : IFullApi<TimeEntryModel, TimeEntryFilter>

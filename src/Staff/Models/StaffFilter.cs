@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api.Staff.Models
+namespace Vooban.FreshBooks.Staff.Models
 {
     public class StaffFilter : FreshbooksFilter
     {

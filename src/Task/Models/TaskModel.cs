@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Dynamic;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api.Task.Models
+namespace Vooban.FreshBooks.Task.Models
 {
     /// <summary>
     /// Represents a Freshbooks TimeEntry (time_entry)

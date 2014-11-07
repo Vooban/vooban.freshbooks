@@ -1,9 +1,9 @@
 ﻿using System;
-using FreshBooks.Api.Project;
-using FreshBooks.Api.Project.Models;
+using Vooban.FreshBooks.Project;
+using Vooban.FreshBooks.Project.Models;
 using Xunit;
 
-namespace FreshBooks.Api.Tests.Project
+namespace Vooban.FreshBooks.Tests.Project
 {    
     public class ProjectApiTests
     {

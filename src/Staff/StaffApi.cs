@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using FreshBooks.Api.Models;
-using FreshBooks.Api.Staff.Models;
+using Vooban.FreshBooks.Models;
+using Vooban.FreshBooks.Staff.Models;
 
-namespace FreshBooks.Api.Staff
+namespace Vooban.FreshBooks.Staff
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.

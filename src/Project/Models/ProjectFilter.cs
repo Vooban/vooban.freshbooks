@@ -1,7 +1,7 @@
 ﻿using HastyAPI;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api.Project.Models
+namespace Vooban.FreshBooks.Project.Models
 {
     public class ProjectFilter : FreshbooksFilter
     {

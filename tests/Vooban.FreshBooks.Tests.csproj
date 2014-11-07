@@ -7,8 +7,8 @@
     <ProjectGuid>{530FE159-C5C2-43FE-B56B-0E96BF7F4422}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FreshBooks.Api.Tests</RootNamespace>
-    <AssemblyName>FreshBooks.Api.Tests</AssemblyName>
+    <RootNamespace>Vooban.FreshBooks.Tests</RootNamespace>
+    <AssemblyName>Vooban.FreshBooks.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -70,9 +70,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\FreshBooks.Api.csproj">
+    <ProjectReference Include="..\src\Vooban.FreshBooks.csproj">
       <Project>{C5289539-9360-476C-9A7E-862124C40612}</Project>
-      <Name>FreshBooks.Api</Name>
+      <Name>Vooban.FreshBooks</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using HastyAPI;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api
+namespace Vooban.FreshBooks
 {
     /// <summary>
     /// Helper class to facilitate conversion from Freshbooks to the .NET world

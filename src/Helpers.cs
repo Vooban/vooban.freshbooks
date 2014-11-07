@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HastyAPI;
 
-namespace FreshBooks.Api
+namespace Vooban.FreshBooks
 {
     /// <summary>
     /// Helpers methods used to facilitate the development of the API

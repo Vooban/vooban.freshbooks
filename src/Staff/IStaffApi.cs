@@ -1,6 +1,6 @@
-﻿using FreshBooks.Api.Staff.Models;
+﻿using Vooban.FreshBooks.Staff.Models;
 
-namespace FreshBooks.Api.Staff
+namespace Vooban.FreshBooks.Staff
 {
     public interface IStaffApi : IReadOnlyBasicApi<StaffModel>
     {

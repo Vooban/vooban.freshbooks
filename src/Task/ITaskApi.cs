@@ -1,6 +1,6 @@
-﻿using FreshBooks.Api.Task.Models;
+﻿using Vooban.FreshBooks.Task.Models;
 
-namespace FreshBooks.Api.Task
+namespace Vooban.FreshBooks.Task
 {
     public interface ITaskApi
         : IFullApi<TaskModel, TaskFilter>

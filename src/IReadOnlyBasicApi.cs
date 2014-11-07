@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using FreshBooks.Api.Models;
+using Vooban.FreshBooks.Models;
 
-namespace FreshBooks.Api
+namespace Vooban.FreshBooks
 {
     public interface IReadOnlyBasicApi<T> 
         where T : FreshbooksModel 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using FreshBooks.Api.Models;
-using FreshBooks.Api.TimeEntry.Models;
+using Vooban.FreshBooks.Models;
+using Vooban.FreshBooks.TimeEntry.Models;
 
-namespace FreshBooks.Api.TimeEntry
+namespace Vooban.FreshBooks.TimeEntry
 {
     /// <summary>
     /// This class provide core methods and returns Freshbooks response objects, if you have to  work with Freshbooks responses statuses.

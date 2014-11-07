@@ -3,15 +3,15 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using FreshBooks.Api.Staff;
-using FreshBooks.Api.TimeEntry;
-using FreshBooks.Api.TimeEntry.Models;
+using Vooban.FreshBooks.Staff;
+using Vooban.FreshBooks.TimeEntry;
+using Vooban.FreshBooks.TimeEntry.Models;
 using Xunit;
-using FreshBooks.Api.Task;
+using Vooban.FreshBooks.Task;
 using System.Diagnostics;
-using FreshBooks.Api.Project;
+using Vooban.FreshBooks.Project;
 
-namespace FreshBooks.Api.Tests.TimeEntry
+namespace Vooban.FreshBooks.Tests.TimeEntry
 {    
     public class TimeEntryApiTests
     {
