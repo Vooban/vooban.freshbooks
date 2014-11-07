@@ -159,7 +159,7 @@ namespace Vooban.FreshBooks.Staff
         /// <returns>
         /// The <see cref="T" /> information for the specified <paramref name="id" />
         /// </returns>
-        public StaffModel Get(string id)
+        public StaffModel Get(int id)
         {
             return _api.Get(id);
         }

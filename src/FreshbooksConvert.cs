@@ -100,7 +100,7 @@ namespace Vooban.FreshBooks
         public static double? ToDouble(string value)
         {
             if (!string.IsNullOrWhiteSpace(value))
-            {
+            { 
                 return Convert.ToDouble(value, CultureInfo.InvariantCulture);
             }
 
@@ -116,6 +116,9 @@ namespace Vooban.FreshBooks
         {
             if (value == null)
                 return null;
+
+            if (value.GetType() == typeof(Int32))
+                return (int)value;
 
             return ToInt32(value.ToString());
         }

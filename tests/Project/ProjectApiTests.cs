@@ -61,7 +61,7 @@ namespace Vooban.FreshBooks.Tests.Project
 
                 var testedClass = new ProjectApi(freshbooks);
 
-                var result = testedClass.Get("3");
+                var result = testedClass.Get(3);
                 Assert.NotNull(result);
             }
         }

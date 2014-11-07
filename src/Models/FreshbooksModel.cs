@@ -8,7 +8,7 @@
         /// <summary>
         /// The unique identifier of the model
         /// </summary>
-        public string Id { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// Gets the name of the Freshbooks entity related to this model

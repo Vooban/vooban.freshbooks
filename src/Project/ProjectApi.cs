@@ -192,7 +192,7 @@ namespace Vooban.FreshBooks.Project
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public void Delete(string id)
+        public void Delete(int id)
         {
             _api.Delete(id);
     }
@@ -204,7 +204,7 @@ namespace Vooban.FreshBooks.Project
         /// <returns>
         /// The <see cref="ProjectModel" /> information for the specified <paramref name="id" />
         /// </returns>
-        public ProjectModel Get(string id)
+        public ProjectModel Get(int id)
         {
             return _api.Get(id);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Dynamic;
 using HastyAPI;
 using Vooban.FreshBooks.Models;
@@ -20,6 +21,7 @@ namespace Vooban.FreshBooks.TimeEntry.Models
     ///     <billed>0</billed>   <!-- 1 or 0 (Read Only) -->  
     ///   </time_entry> 
     /// </remarks>
+    [DebuggerDisplay("{Id} - Logged by {StaffId} on project {ProjectId} and task {TaskId}")]
     public class TimeEntryModel : FreshbooksModel
     {
         #region Properties
@@ -27,17 +29,17 @@ namespace Vooban.FreshBooks.TimeEntry.Models
         /// <summary>
         /// Gets the staff member's unique identifier to which this time entry is associated
         /// </summary>
-        public string StaffId { get; internal set; }
+        public int StaffId { get; internal set; }
 
         /// <summary>
         /// Gets the projects's unique identifier to which this time entry is associated
         /// </summary>
-        public string ProjectId { get; internal set; }
+        public int ProjectId { get; internal set; }
 
         /// <summary>
         /// Gets the task's unique identifier to which this time entry is associated
         /// </summary>
-        public string TaskId { get; internal set; }
+        public int TaskId { get; internal set; }
 
         /// <summary>
         /// Gets the number of hours worked on this project-task combination for this user
@@ -71,10 +73,10 @@ namespace Vooban.FreshBooks.TimeEntry.Models
         {
             dynamic result = new ExpandoObject();
 
-            if (!string.IsNullOrEmpty(Id)) result.time_entry_id = Id;
-            if (!string.IsNullOrEmpty(StaffId)) result.staff_id = StaffId;
-            if (!string.IsNullOrEmpty(ProjectId)) result.project_id = ProjectId;
-            if (!string.IsNullOrEmpty(TaskId)) result.task_id = TaskId;
+            result.time_entry_id = Id;
+            result.staff_id = StaffId;
+            result.project_id = ProjectId;
+            result.task_id = TaskId;
             if (!string.IsNullOrEmpty(Notes)) result.notes = Notes;
             if (Hours.HasValue) result.hours = FreshbooksConvert.FromDouble(Hours);
             if (Date.HasValue) result.date = FreshbooksConvert.FromDateTime(Date);
@@ -95,10 +97,10 @@ namespace Vooban.FreshBooks.TimeEntry.Models
         {
             return new TimeEntryModel
             {
-                Id = entry.time_entry_id,
-                StaffId = entry.staff_id,
-                ProjectId = entry.project_id,
-                TaskId = entry.task_id,
+                Id = FreshbooksConvert.ToInt32(entry.time_entry_id),
+                StaffId = FreshbooksConvert.ToInt32(entry.staff_id),
+                ProjectId = FreshbooksConvert.ToInt32(entry.project_id),
+                TaskId = FreshbooksConvert.ToInt32(entry.task_id),
                 Notes = entry.notes,
                 Hours = FreshbooksConvert.ToDouble(entry.hours),
                 Date = FreshbooksConvert.ToDateTime(entry.date),

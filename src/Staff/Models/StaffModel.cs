@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using HastyAPI;
 using Newtonsoft.Json;
@@ -32,6 +33,7 @@ namespace Vooban.FreshBooks.Staff.Models
     ///      <code></code>  
     ///    </staff>  
     ///  </remarks>
+    [DebuggerDisplay("{Id} - {FirstName} {Lastname} ({Email})")]
     public class StaffModel : FreshbooksModel
     {
         /// <summary>
@@ -93,7 +95,7 @@ namespace Vooban.FreshBooks.Staff.Models
         /// <summary>
         /// Gets the list of projects identifiers to which this person is associated
         /// </summary>
-        public IEnumerable<String> ProjectIds { get; internal set; }
+        public IEnumerable<int> ProjectIds { get; internal set; }
 
         /// <summary>
         /// Converts this instance to a Freshbooks compatible dynamic instance
@@ -105,7 +107,7 @@ namespace Vooban.FreshBooks.Staff.Models
         {
             dynamic result = new ExpandoObject();
 
-            if (!string.IsNullOrEmpty(Id)) result.staff_id = Id;
+            if (Id.HasValue) result.staff_id = Id;
             if (!string.IsNullOrEmpty(Username)) result.username = Username;
             if (!string.IsNullOrEmpty(FirstName)) result.first_name = FirstName;
             if (!string.IsNullOrEmpty(Lastname)) result.last_name = Lastname;
@@ -137,19 +139,19 @@ namespace Vooban.FreshBooks.Staff.Models
         /// <returns>The <see cref="StaffModel"/> instance correctly filled with the Freshbooks response</returns>
         public static StaffModel FromFreshbooksDynamic(dynamic staffMember)
         {
-            var projectIds = new List<String>();
+            var projectIds = new List<int>();
 
             if (staffMember.projects != null && staffMember.projects.project != null)
             {
                 foreach (var item in staffMember.projects.project)
                 {
-                    projectIds.Add(item.Key == "project_id" ? item.Value : item.project_id);
+                    projectIds.Add(item.Key == "project_id" ? FreshbooksConvert.ToInt32(item.Value) : FreshbooksConvert.ToInt32(item.project_id));
                 }
             }
 
             return new StaffModel
             {
-                Id = staffMember.staff_id,
+                Id = FreshbooksConvert.ToInt32(staffMember.staff_id),
                 Username = staffMember.username,
                 FirstName = staffMember.first_name,
                 Lastname = staffMember.last_name,

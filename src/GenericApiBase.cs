@@ -65,7 +65,7 @@ namespace Vooban.FreshBooks
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>create</c> operation using an entity with an Id</exception>
         protected string CallCreateMethod(string apiName, T entity, Func<dynamic, string> idBuilder)
         {
-            if(entity.Id != null)
+            if (entity.Id.HasValue)
                 throw new InvalidOperationException("Cannot call the <create> operation using an entity with an Id");
 
             var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a).Add(entity.FreshbooksEntityName, entity.ToFreshbooksDynamic()));
@@ -91,7 +91,7 @@ namespace Vooban.FreshBooks
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>update</c> operation using an entity without an Id</exception>
         protected void CallUpdateMethod(string apiName, T entity)
         {
-            if (string.IsNullOrEmpty(entity.Id))
+            if (!entity.Id.HasValue)
                 throw new InvalidOperationException("Cannot call the <update> operation using an entity without an Id");
 
             var callResult = FreshbooksClient.Call(apiName, a => ((IDictionary<string, object>)a).Add(entity.FreshbooksEntityName, entity.ToFreshbooksDynamic()));
@@ -117,9 +117,9 @@ namespace Vooban.FreshBooks
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier
         /// </exception>
-        protected void CallDeleteMethod(string apiName, string idName, string idValue)
+        protected void CallDeleteMethod(string apiName, string idName, int? idValue)
         {
-            if (string.IsNullOrEmpty(idValue))
+            if (!idValue.HasValue)
                 throw new InvalidOperationException("Cannot call the <delete> operation using an empty Id");
 
             if (string.IsNullOrEmpty(idName))

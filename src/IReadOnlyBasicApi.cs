@@ -13,7 +13,7 @@ namespace Vooban.FreshBooks
         /// <returns>
         /// The <see cref="T" /> information for the specified <paramref name="id" />
         /// </returns>
-        T Get(string id);
+        T Get(int id);
 
         /// <summary>
         /// Call the api.list method on the Freshbooks API.

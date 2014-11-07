@@ -56,7 +56,7 @@ namespace Vooban.FreshBooks
         /// <returns>
         /// The <see cref="T" /> information for the specified <paramref name="id" />
         /// </returns>
-        public T Get(string id)
+        public T Get(int id)
       {
             if (!string.IsNullOrEmpty(_options.GetCommand))
                 return CallGetMethod(_options.GetCommand, p => ((IDictionary<string, object>)p)[_options.IdProperty] = id, r => _options.FromDynamicModel(r));
@@ -145,7 +145,7 @@ namespace Vooban.FreshBooks
         public void Delete(T entity)
         {
             if (!string.IsNullOrEmpty(_options.DeleteCommand))
-                CallDeleteMethod(_options.DeleteCommand, _options.IdProperty, entity.Id);
+                CallDeleteMethod(_options.DeleteCommand, _options.IdProperty, entity.Id.Value);
 
             throw new NotSupportedException("The [delete] operation is not supported");
         }
@@ -160,7 +160,7 @@ namespace Vooban.FreshBooks
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public void Delete(string id)
+        public void Delete(int id)
       {
             if (!string.IsNullOrEmpty(_options.DeleteCommand))
                 CallDeleteMethod(_options.DeleteCommand, _options.IdProperty, id);

@@ -5,6 +5,7 @@ using Vooban.FreshBooks.Models;
 using Vooban.FreshBooks.Staff.Models;
 using Vooban.FreshBooks.Task.Models;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Vooban.FreshBooks.Project.Models
 {
@@ -35,6 +36,7 @@ namespace Vooban.FreshBooks.Project.Models
     ///     </budget>  
     ///   </project>  
     /// </remarks>
+    [DebuggerDisplay("{Id}-{Name}")]
     public class ProjectModel : FreshbooksModel
     {
         #region Properties
@@ -60,7 +62,7 @@ namespace Vooban.FreshBooks.Project.Models
         /// <summary>
         /// Gets the unique client identifier to which this project belongs.
         /// </summary>
-        public string ClientId { get; internal set; }
+        public int? ClientId { get; internal set; }
 
         /// <summary>
         /// Gets the rate at which people will bill on this project
@@ -75,12 +77,12 @@ namespace Vooban.FreshBooks.Project.Models
         /// <summary>
         /// Gets the task that are attached to this project
         /// </summary>
-        public IEnumerable<string> TaskIds { get; internal set; }
+        public IEnumerable<int> TaskIds { get; internal set; }
 
         /// <summary>
         /// Gets the staff member attached to this project
         /// </summary>
-        public IEnumerable<string> StaffIds { get; internal set; }
+        public IEnumerable<int> StaffIds { get; internal set; }
 
         #endregion
 
@@ -94,11 +96,11 @@ namespace Vooban.FreshBooks.Project.Models
         {
             dynamic result = new ExpandoObject();
 
-            if (!string.IsNullOrEmpty(Id)) result.project_id = Id;
+            if (Id.HasValue) result.project_id = Id;
             if (!string.IsNullOrEmpty(Name)) result.name = Name;
             if (!string.IsNullOrEmpty(Description)) result.description = Description;
             if (!string.IsNullOrEmpty(BillMethod)) result.bill_method = BillMethod;
-            if (!string.IsNullOrEmpty(ClientId)) result.client_id = ClientId;
+            result.client_id = ClientId;
 
             if (Rate.HasValue) result.rate = FreshbooksConvert.FromDouble(Rate);
             if (HourBudget.HasValue) result.hour_budget = FreshbooksConvert.FromDouble(HourBudget);
@@ -121,46 +123,48 @@ namespace Vooban.FreshBooks.Project.Models
         {
             var result =  new ProjectModel
             {
-                Id = entry.project_id,
+                Id = FreshbooksConvert.ToInt32(entry.project_id),
                 Name = entry.name,
                 Description = entry.description,
                 BillMethod = entry.bill_method,
-                ClientId = entry.client_id,
                 Rate = FreshbooksConvert.ToDouble(entry.rate),
                 HourBudget = FreshbooksConvert.ToDouble(entry.hour_budget)
             };
+                
+            if(!string.IsNullOrEmpty(entry.client_id))
+                result.ClientId = FreshbooksConvert.ToInt32(entry.client_id);
 
-            var tasks  = new List<string>();
+            var tasks  = new List<int>();
 
             if (entry.tasks != null)
             {
                 if (entry.tasks.task is List<object>)
                 {
                     foreach (var item in entry.tasks.task)
-                        tasks.Add(item.task_id);
+                        tasks.Add(FreshbooksConvert.ToInt32(item.task_id));
                 }
                 else
                 {
-                    foreach (var item in entry.tasks)                    
-                        tasks.Add(Helpers.ToDynamic(item).task.task_id);                   
+                    foreach (var item in entry.tasks)
+                        tasks.Add(FreshbooksConvert.ToInt32(Helpers.ToDynamic(item).task.task_id));                   
                 }
                               
                 result.TaskIds = tasks;
             }
 
-            var members = new List<string>();
+            var members = new List<int>();
 
             if (entry.staff != null)
             {
                 if (entry.tasks.task is List<object>)
                 {
                     foreach (var item in entry.staff.staff)
-                        members.Add(item.staff_id);
+                        members.Add(FreshbooksConvert.ToInt32(item.staff_id));
                 }
                 else
                 {
                     foreach (var item in entry.staff.staff)
-                        tasks.Add(Helpers.ToDynamic(item).staff_id);
+                        tasks.Add(FreshbooksConvert.ToInt32(Helpers.ToDynamic(item).staff_id));
                 }
    
                 result.StaffIds = members;

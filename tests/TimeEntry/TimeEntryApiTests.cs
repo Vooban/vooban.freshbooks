@@ -41,7 +41,7 @@ namespace Vooban.FreshBooks.Tests.TimeEntry
                 var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                Assert.Throws<InvalidOperationException>(() => testedClass.Create(new TimeEntryModel { TaskId = "999999", Hours = 25d}));
+                Assert.Throws<InvalidOperationException>(() => testedClass.Create(new TimeEntryModel { TaskId = 999999, Hours = 25d}));
             }
  }
 
@@ -69,7 +69,7 @@ namespace Vooban.FreshBooks.Tests.TimeEntry
 
                 var testedClass = new TimeEntryApi(freshbooks);
 
-                var result = testedClass.Get("581167");
+                var result = testedClass.Get(581167);
                 Assert.NotNull(result);
             }
         }

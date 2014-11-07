@@ -47,6 +47,6 @@ namespace Vooban.FreshBooks
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        void Delete(string id);
+        void Delete(int id);
   }
 }

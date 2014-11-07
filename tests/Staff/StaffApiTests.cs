@@ -35,7 +35,7 @@ namespace Vooban.FreshBooks.Tests.Staff
 
                 var testedClass = new StaffApi(freshbooks);
 
-                var result = testedClass.Get("1");
+                var result = testedClass.Get(1);
                 Assert.NotNull(result);
             }
         }
@@ -66,7 +66,7 @@ namespace Vooban.FreshBooks.Tests.Staff
                 var testedClass = new StaffApi(freshbooks);
 
                 var result = testedClass.GetAllPages();
-                Assert.NotNull(result);
+                Assert.NotNull(result);                
             }
         }
 

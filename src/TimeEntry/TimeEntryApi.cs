@@ -192,7 +192,7 @@ namespace Vooban.FreshBooks.TimeEntry
         /// <exception cref="System.InvalidOperationException">Cannot call the <c>delete</c> operation using an empty Id
         /// or
         /// Cannot call the <c>delete</c> operation using an empty Id identifier</exception>
-        public void Delete(string id)
+        public void Delete(int id)
         {
             _api.Delete(id);
     }
@@ -204,7 +204,7 @@ namespace Vooban.FreshBooks.TimeEntry
         /// <returns>
         /// The <see cref="TimeEntryModel" /> information for the specified <paramref name="id" />
         /// </returns>
-        public TimeEntryModel Get(string id)
+        public TimeEntryModel Get(int id)
         {
             return _api.Get(id);
         }

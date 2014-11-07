@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Dynamic;
 using Vooban.FreshBooks.Models;
 
@@ -16,6 +17,7 @@ namespace Vooban.FreshBooks.Task.Models
     ///   <rate>180</rate>  
     ///  </task>
     /// </remarks>
+    [DebuggerDisplay("{Id}-{Name}")]
     public class TaskModel : FreshbooksModel
     {
         #region Properties
@@ -52,7 +54,7 @@ namespace Vooban.FreshBooks.Task.Models
         {
             dynamic result = new ExpandoObject();
 
-            if (!string.IsNullOrEmpty(Id)) result.task_id = Id;
+            result.task_id = Id;
             if (!string.IsNullOrEmpty(Name)) result.name = Name;
             if (!string.IsNullOrEmpty(Description)) result.description = Description;
 
@@ -75,7 +77,7 @@ namespace Vooban.FreshBooks.Task.Models
         {
             return new TaskModel
             {
-                Id = entry.task_id,
+                Id = FreshbooksConvert.ToInt32(entry.task_id),
                 Name = entry.name,
                 Description = entry.description,
                 Rate = FreshbooksConvert.ToDouble(entry.rate),
