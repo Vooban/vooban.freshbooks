@@ -57,6 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Reports\Timesheet\TimesheetReport.cs" />
+    <Compile Include="Reports\FreshbooksReportBase.cs" />
+    <Compile Include="Reports\Timesheet\TimesheetReportTaskInformation.cs" />
+    <Compile Include="Reports\Timesheet\RangedTimeSheet.cs" />
+    <Compile Include="Reports\Timesheet\RangedTimeSheetDetail.cs" />
     <Compile Include="Task\ITaskApi.cs" />
     <Compile Include="Task\Models\TaskFilter.cs" />
     <Compile Include="Task\Models\TaskModel.cs" />
