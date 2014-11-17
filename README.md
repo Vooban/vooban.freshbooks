@@ -7,9 +7,6 @@ The goal for us is to ease developpement using Freshbooks for .NET users, while 
 ## Why ##
 We are creating this because **HastyAPI.Freshbooks** is great, but you must have the [Freshbooks API](http://developers.freshbooks.com/) by your side in order to use it. Moreover, HastyAPI.Freshbooks uses dynamic objects that reflects 1:1 the xml content of the **Freshbooks API**, which might not always be ideal as **Freshbooks** uses XML, and therefore, there is a lot of uncessary code to do on the dynamic object each time we want to integrate with Freshbooks.
 
-## Dependency Injection Friendly ##
-The library is build to be dependecy injection friendly and does include a [UnityContainerExtension](http://msdn.microsoft.com/en-us/library/microsoft.practices.unity.unitycontainerextension%28v=pandp.30%29.aspx) that you can make use of.
-
 ## Exemple ##
 
 ### Basic API ###
