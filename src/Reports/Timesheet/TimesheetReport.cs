@@ -2,15 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Vooban.FreshBooks.Project;
-using Vooban.FreshBooks.Project.Models;
-using Vooban.FreshBooks.Staff;
-using Vooban.FreshBooks.Staff.Models;
-using Vooban.FreshBooks.Task;
-using Vooban.FreshBooks.Task.Models;
-using Vooban.FreshBooks.TimeEntry;
 using Vooban.FreshBooks.TimeEntry.Models;
 
 namespace Vooban.FreshBooks.Reports.Timesheet
@@ -38,19 +29,21 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             foreach (var staffId in timeEntriesByStaffMember.Keys)
             {
                 var currentStaff = StaffMembers.SingleOrDefault(s => s.Id == staffId);
-                if (currentStaff != null)
+                if (currentStaff != null && currentStaff.Id.HasValue)
                 {
-                    var currentStaffTimeEntries = timeEntriesByStaffMember[currentStaff.Id.Value];
+                    var currentStaffTimeEntries = timeEntriesByStaffMember[currentStaff.Id.Value].ToList();
 
-                    var currentStaffTimeSheetDetails = new RangedTimeSheetDetail() {
+                    var currentStaffTimeSheetDetails = new RangedTimeSheetDetail {
                         Employee = currentStaff,
-                        AllTimeEntries=currentStaffTimeEntries,
-                        PayableLabourTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.PayableLabourTaskId.Contains(w.TaskId)),
-                        IneligibleToOvertimeTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.IneligibleToOvertimeTaskId.Contains(w.TaskId)),
+                        AllTimeEntries=currentStaffTimeEntries,                       
                         HollidayTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.HollidayTaskIds.Contains(w.TaskId)),
                         SicknessTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.SicknessTaskIds.Contains(w.TaskId)),
-                        UnpaidAbsenceTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.UnpaidAbsenceTaskIds.Contains(w.TaskId)),
                         VacationsTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.VacationsTaskIds.Contains(w.TaskId)),
+                        TrainingTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.TrainingTaskIds.Contains(w.TaskId)),
+                        BankedTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.BankedTimeTaskIds.Contains(w.TaskId)),
+                        PayableTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.PayableLabourTaskId.Contains(w.TaskId)),
+                        PaidTimeOffTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.PaidTimeOffTaskIds.Contains(w.TaskId)),
+                        UnpaidTimeOffTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.UnpaidTimeOffTaskIds.Contains(w.TaskId)),
                     };
                     
                     timesheetDetails.Add(currentStaffTimeSheetDetails);
