@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Reports\TimeConciliation\TimeConciliationReport.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReport.cs" />
     <Compile Include="Reports\FreshbooksReportBase.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReportTaskInformation.cs" />
@@ -104,9 +105,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reports\Timebank\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
