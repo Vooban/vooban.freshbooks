@@ -30,19 +30,27 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public IEnumerable<TimeEntryModel> AllEmployeesIneligibleToOvertimeTimeEntries
+        public IEnumerable<TimeEntryModel> AllEmployeesPaidTimeOffTimeEntries
         {
             get
             {
-                return EmployeeTimeSheets.SelectMany(s => s.IneligibleToOvertimeTimeEntries);
+                return EmployeeTimeSheets.SelectMany(s => s.PaidTimeOffTimeEntries);
             }
         }
 
-        public IEnumerable<TimeEntryModel> AllEmployeesPayableLabourTimeEntries
+        public IEnumerable<TimeEntryModel> AllEmployeesUnpaidTimeOffTimeEntries
         {
             get
             {
-                return EmployeeTimeSheets.SelectMany(s => s.PayableLabourTimeEntries);
+                return EmployeeTimeSheets.SelectMany(s => s.UnpaidTimeOffTimeEntries);
+            }
+        }
+
+        public IEnumerable<TimeEntryModel> AllEmployeesPayableTimeEntries
+        {
+            get
+            {
+                return EmployeeTimeSheets.SelectMany(s => s.PayableTimeEntries);
             }
         }
 
@@ -70,11 +78,19 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public IEnumerable<TimeEntryModel> AllEmployeesUnpaidAbsenceTimeEntries
+        public IEnumerable<TimeEntryModel> AllEmployeesBankedTimeEntries
         {
             get
             {
-                return EmployeeTimeSheets.SelectMany(s => s.UnpaidAbsenceTimeEntries);
+                return EmployeeTimeSheets.SelectMany(s => s.BankedTimeEntries);
+            }
+        }
+
+        public IEnumerable<TimeEntryModel> AllEmployeesTrainingTimeEntries
+        {
+            get
+            {
+                return EmployeeTimeSheets.SelectMany(s => s.TrainingTimeEntries);
             }
         }
 
@@ -86,19 +102,27 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalIneligibleToOvertimeTime
+        public double TotalPaidTimeOffTime
         {
             get
             {
-                return EmployeeTimeSheets.Sum(s => s.TotalIneligibleToOvertimeTime);
+                return EmployeeTimeSheets.Sum(s => s.TotalPaidTimeOffTime);
             }
         }
 
-        public double TotalEligibleToOvertimeTime
+        public double TotalUnpaidTimeOffTime
         {
             get
             {
-                return EmployeeTimeSheets.Sum(s => s.TotalPayableLabourTime);
+                return EmployeeTimeSheets.Sum(s => s.TotalUnpaidTimeOffTime);
+            }
+        }
+
+        public double TotalPayableTime
+        {
+            get
+            {
+                return EmployeeTimeSheets.Sum(s => s.TotalPayableTime);
             }
         }
 
@@ -126,11 +150,19 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalUnpaidAbsenceTime
+        public double TotalBankedTime
         {
             get
             {
-                return EmployeeTimeSheets.Sum(s => s.TotalUnpaidAbsenceTime);
+                return EmployeeTimeSheets.Sum(s => s.TotalBankedTime);
+            }
+        }
+
+        public double TotalTrainingTime
+        {
+            get
+            {
+                return EmployeeTimeSheets.Sum(s => s.TotalTrainingTime);
             }
         }
     }

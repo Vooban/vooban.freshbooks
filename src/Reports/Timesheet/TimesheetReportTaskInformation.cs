@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vooban.FreshBooks.Reports.Timesheet
 {
@@ -15,6 +12,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             VacationsTaskIds = new List<int>();
             HollidayTaskIds = new List<int>();
             UnpaidAbsenceTaskIds = new List<int>();
+            BankedTimeTaskIds = new List<int>();
+            TrainingTaskIds = new List<int>();
         }
 
         public IEnumerable<int> AllTaskIds { get; set; }
@@ -27,11 +26,23 @@ namespace Vooban.FreshBooks.Reports.Timesheet
 
         public IList<int> UnpaidAbsenceTaskIds { get; set; }
 
-        public IEnumerable<int> IneligibleToOvertimeTaskId
+        public IList<int> BankedTimeTaskIds { get; set; }
+
+        public IList<int> TrainingTaskIds { get; set; }
+
+        public IEnumerable<int> PaidTimeOffTaskIds
         {
             get
             {
-                return SicknessTaskIds.Concat(VacationsTaskIds).Concat(HollidayTaskIds).Concat(UnpaidAbsenceTaskIds);
+                return SicknessTaskIds.Concat(VacationsTaskIds).Concat(HollidayTaskIds).Concat(UnpaidAbsenceTaskIds).Concat(BankedTimeTaskIds).Concat(TrainingTaskIds);
+            }
+        }
+
+        public IEnumerable<int> UnpaidTimeOffTaskIds
+        {
+            get
+            {
+                return UnpaidAbsenceTaskIds;
             }
         }
 
@@ -40,7 +51,7 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             get
             {
                 if (AllTaskIds != null)
-                    return AllTaskIds.Where(t => !IneligibleToOvertimeTaskId.Contains(t));
+                    return AllTaskIds.Where(t => !UnpaidTimeOffTaskIds.Contains(t));
                 else
                     throw new InvalidOperationException("You cannot ask for the whole list of eligible time to overtime without having provided the entire list of task in your freshbooks system first");
             }
