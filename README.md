@@ -14,11 +14,10 @@ The basic API returns results wrapped inside a Freshbooks response object that y
 
 #### This is a very basic exemple ####
 ```
-var freshbooks = new Freshbooks("username", "token");
+var freshbooks = FreshbooksApi.Build("username", "token");
 
-var testedClass = new StaffApi(freshbooks);
-
-var currentStaff = testedClass.GetCurrent();
+var currentStaff = freshbooks.Staff.GetCurrent();
+var staffList = freshbooks.Staff.GetAllPages();
 
 // TODO : Work with the strongly typed StaffModel object
 ```
@@ -27,9 +26,8 @@ var currentStaff = testedClass.GetCurrent();
 This methods allows you to get a list of items from Freshbooks. This methods supports paging, so you can passing the page number and number of items per page you want to get. In the following example, we're asking for the first page, with 25 items per page.
 
 ```
-var freshbooks = new Freshbooks("username", "token");
-var testedClass = new StaffApi(freshbooks);
-FreshbooksPagedResponse<StaffModel> result = testedClass.GetList(1, 25);
+var freshbooks = new FreshbooksApi("username", "token");
+FreshbooksPagedResponse<StaffModel> result = freshbooks.Staff.GetList(1, 25);
 
 if(result.Success)
 {
@@ -48,8 +46,7 @@ if(result.Success)
 #### Getting all pages at once ####
 ```
 var freshbooks = new Freshbooks("username", "token");
-var testedClass = new StaffApi(freshbooks);
-IEnumerable<StaffModel> result = testedClass.GetAllPages();
+IEnumerable<StaffModel> result = freshbooks.Staff.GetAllPages();
 
 // Iterate over the results
 foreach(var staff in result)

@@ -57,7 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Reports\TimeConciliation\TimeConciliationReport.cs" />
+    <Compile Include="FreshBooksApi.cs" />
+    <Compile Include="FreshBooksReports.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReport.cs" />
     <Compile Include="Reports\FreshbooksReportBase.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReportTaskInformation.cs" />

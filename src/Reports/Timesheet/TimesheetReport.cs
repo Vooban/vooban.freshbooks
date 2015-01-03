@@ -34,6 +34,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
                     var currentStaffTimeEntries = timeEntriesByStaffMember[currentStaff.Id.Value].ToList();
 
                     var currentStaffTimeSheetDetails = new RangedTimeSheetDetail {
+                        From = from,
+                        To = to,
                         Employee = currentStaff,
                         AllTimeEntries=currentStaffTimeEntries,                       
                         HollidayTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.HollidayTaskIds.Contains(w.TaskId)),

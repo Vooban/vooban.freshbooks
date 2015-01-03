@@ -12,6 +12,10 @@ namespace Vooban.FreshBooks.Reports.Timesheet
     [DebuggerDisplay("Timesheet for {Employee.FirstName} {Employee.Lastname}")]
     public class RangedTimeSheetDetail
     {
+        public DateTime From { get; internal set; }
+
+        public DateTime To { get; internal set; }
+
         public StaffModel Employee { get; internal set; }
 
         [DebuggerDisplay("All time entries for a total of {TotalTime} hours")]
