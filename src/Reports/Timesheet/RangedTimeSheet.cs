@@ -30,27 +30,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public IEnumerable<TimeEntryModel> AllEmployeesPaidTimeOffTimeEntries
-        {
-            get
-            {
-                return EmployeeTimeSheets.SelectMany(s => s.PaidTimeOffTimeEntries);
-            }
-        }
-
         public IEnumerable<TimeEntryModel> AllEmployeesUnpaidTimeOffTimeEntries
         {
             get
             {
                 return EmployeeTimeSheets.SelectMany(s => s.UnpaidTimeOffTimeEntries);
-            }
-        }
-
-        public IEnumerable<TimeEntryModel> AllEmployeesPayableTimeEntries
-        {
-            get
-            {
-                return EmployeeTimeSheets.SelectMany(s => s.PayableTimeEntries);
             }
         }
 
@@ -94,6 +78,14 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
+        public IEnumerable<TimeEntryModel> AllEmployeesBillableTimeEntries
+        {
+            get
+            {
+                return EmployeeTimeSheets.SelectMany(s => s.BillableTimeEntries);
+            }
+        }
+
         public double TotalTime
         {
             get
@@ -102,27 +94,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalPaidTimeOffTime
-        {
-            get
-            {
-                return EmployeeTimeSheets.Sum(s => s.TotalPaidTimeOffTime);
-            }
-        }
-
         public double TotalUnpaidTimeOffTime
         {
             get
             {
                 return EmployeeTimeSheets.Sum(s => s.TotalUnpaidTimeOffTime);
-            }
-        }
-
-        public double TotalPayableTime
-        {
-            get
-            {
-                return EmployeeTimeSheets.Sum(s => s.TotalPayableTime);
             }
         }
 
@@ -163,6 +139,14 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             get
             {
                 return EmployeeTimeSheets.Sum(s => s.TotalTrainingTime);
+            }
+        }
+
+        public double TotalBillableTime
+        {
+            get
+            {
+                return EmployeeTimeSheets.Sum(s => s.TotalBillableTime);
             }
         }
     }

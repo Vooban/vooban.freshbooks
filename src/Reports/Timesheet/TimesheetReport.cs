@@ -25,7 +25,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
              var result = TimeEntryService.SearchAll(new TimeEntryFilter { DateFrom = from, DateTo = to });
 
             var timeEntriesByStaffMember = result.GroupBy(g => g.StaffId).OrderBy(o => o.Key).ToDictionary(k => k.Key, v => v.Select(s => s));
-           
+            var billableTasksId = TasksService.GetAllPages().Where(b => b.Billable == true).Select(s=>s.Id);
+
             foreach (var staffId in timeEntriesByStaffMember.Keys)
             {
                 var currentStaff = StaffMembers.SingleOrDefault(s => s.Id == staffId);
@@ -43,9 +44,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
                         VacationsTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.VacationsTaskIds.Contains(w.TaskId)),
                         TrainingTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.TrainingTaskIds.Contains(w.TaskId)),
                         BankedTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.BankedTimeTaskIds.Contains(w.TaskId)),
-                        PayableTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.PayableLabourTaskId.Contains(w.TaskId)),
-                        PaidTimeOffTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.PaidTimeOffTaskIds.Contains(w.TaskId)),
                         UnpaidTimeOffTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.UnpaidTimeOffTaskIds.Contains(w.TaskId)),
+                        BillableTimeEntries = currentStaffTimeEntries.Where(w => billableTasksId.Contains(w.TaskId))
                     };
                     
                     timesheetDetails.Add(currentStaffTimeSheetDetails);

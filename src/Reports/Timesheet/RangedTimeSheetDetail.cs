@@ -21,14 +21,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
         [DebuggerDisplay("All time entries for a total of {TotalTime} hours")]
         public IEnumerable<TimeEntryModel> AllTimeEntries { get; internal set; }
 
-        [DebuggerDisplay("All the unworked but paid time for a total of {TotalIneligibleToOvertimeTime} hours")]
-        public IEnumerable<TimeEntryModel> PaidTimeOffTimeEntries { get; internal set; }
-
         [DebuggerDisplay("All the unworked and unpaid time for a total of {TotalIneligibleToOvertimeTime} hours")]
         public IEnumerable<TimeEntryModel> UnpaidTimeOffTimeEntries { get; internal set; }
-
-        [DebuggerDisplay("Payable labour time entries for a total of {TotalPayableLabourTime} hours")]
-        public IEnumerable<TimeEntryModel> PayableTimeEntries { get; internal set; }
 
         [DebuggerDisplay("Sickness time entries for a total of {TotalSicknessTime} hours")]
         public IEnumerable<TimeEntryModel> SicknessTimeEntries { get; internal set; }
@@ -45,6 +39,9 @@ namespace Vooban.FreshBooks.Reports.Timesheet
         [DebuggerDisplay("Banked absence time entries for a total of {TotalBankedTime} hours")]
         public IEnumerable<TimeEntryModel> TrainingTimeEntries { get; internal set; }
 
+        [DebuggerDisplay("Billable time entries for a total of {TotalBillableTime} hours")]
+        public IEnumerable<TimeEntryModel> BillableTimeEntries { get; set; }
+
         public double TotalTime
         {
             get
@@ -53,27 +50,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalPaidTimeOffTime
-        {
-            get
-            {
-                return PaidTimeOffTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
-            }
-        }
-
         public double TotalUnpaidTimeOffTime
         {
             get
             {
                 return UnpaidTimeOffTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
-            }
-        }
-
-        public double TotalPayableTime
-        {
-            get
-            {
-                return PayableTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
             }
         }
 
@@ -114,6 +95,14 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             get
             {
                 return TrainingTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
+            }
+        }
+
+        public double TotalBillableTime
+        {
+            get
+            {
+                return BillableTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
             }
         }
     }

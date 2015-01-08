@@ -32,7 +32,7 @@ namespace Vooban.PayEngine.Logic.Tests
                 HollidayTaskIds = new List<int> { TaskIds.HOLLIDAY },
                 VacationsTaskIds = new List<int> { TaskIds.VACATIONS },
                 SicknessTaskIds = new List<int> { TaskIds.SICKNESS },
-                UnpaidAbsenceTaskIds = new List<int> { TaskIds.UNPAID },
+                UnpaidTimeOffTaskIds = new List<int> { TaskIds.UNPAID },
                 BankedTimeTaskIds = new List<int> { TaskIds.BANKED },
                 TrainingTaskIds = new List<int> { TaskIds.TRAINING },
             };
@@ -43,7 +43,7 @@ namespace Vooban.PayEngine.Logic.Tests
 
             foreach (var line in result.EmployeeTimeSheets)
             {
-                Debug.WriteLine("{0} {1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11}", line.Employee.FirstName, line.Employee.Lastname, line.TotalTime, line.TotalPayableTime, line.TotalPaidTimeOffTime, line.TotalUnpaidTimeOffTime, line.TotalVacationsTime, line.TotalUnpaidTimeOffTime, line.TotalHollidayTime, line.TotalBankedTime, line.TotalSicknessTime, line.TotalTrainingTime);
+                Debug.WriteLine("{0} {1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11}", line.Employee.FirstName, line.Employee.Lastname, line.TotalTime, line.TotalUnpaidTimeOffTime, line.TotalVacationsTime, line.TotalUnpaidTimeOffTime, line.TotalHollidayTime, line.TotalBankedTime, line.TotalSicknessTime, line.TotalTrainingTime);
             }
         }
     }
