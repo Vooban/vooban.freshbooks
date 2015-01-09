@@ -2,16 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Vooban.FreshBooks</id>
-        <version>0.0.2.1</version>
+        <version>0.0.2.2</version>
         <title>Vooban.FreshBooks</title>
         <authors>Kevin Moore</authors>
         <owners>Vooban</owners>
+        <projectUrl>https://github.com/Vooban/Vooban.FreshBooks</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A simple Freshbooks clients for the .NET world with strongly typed items.</description>
         <summary>Freshbooks clients for .NET</summary>
         <releaseNotes>Added new top level API with Freshbooks API and FreshbooksReports</releaseNotes>
         <copyright>Vooban 2015</copyright>
         <language>en-US</language>
+        <tags>Freshbooks</tags>
         <dependencies>
             <dependency id="HastyAPI" version="1.0.11.0" />
             <dependency id="HastyFreshBooks" version="1.0.5.0" />
