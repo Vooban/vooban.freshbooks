@@ -61,8 +61,11 @@ namespace Vooban.FreshBooks.Tests.Project
 
                 var testedClass = new ProjectApi(freshbooks);
 
-                var result = testedClass.Get(3);
-                Assert.NotNull(result);
+                var allProjects = testedClass.GetList();
+                foreach (var project in allProjects.Result)
+                {
+                    Assert.NotNull(testedClass.Get(project.Id.Value));
+                }
             }
         }
 

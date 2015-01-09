@@ -159,7 +159,19 @@ namespace Vooban.FreshBooks.Project.Models
                 if (entry.tasks.task is List<object>)
                 {
                     foreach (var item in entry.staff.staff)
-                        members.Add(FreshbooksConvert.ToInt32(item.staff_id));
+                    {
+                        var kvp = item is KeyValuePair<string, object>;
+                        if (kvp && ((KeyValuePair<string, object>) item).Key == "staff_id" && ((KeyValuePair<string, object>) item).Value != null)
+                        {
+                            var value = ((KeyValuePair<string, object>) item).Value;
+                            members.Add(FreshbooksConvert.ToInt32(value).Value);
+                        }
+                        else
+                        {
+                            var value = FreshbooksConvert.ToInt32(item.staff_id);
+                            members.Add(value is int ? value : value.Value);                                                    
+                        }
+                    }
                 }
                 else
                 {

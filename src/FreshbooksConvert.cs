@@ -117,7 +117,7 @@ namespace Vooban.FreshBooks
             if (value == null)
                 return null;
 
-            if (value.GetType() == typeof(Int32))
+            if (value is int)
                 return (int)value;
 
             return ToInt32(value.ToString());
