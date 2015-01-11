@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Vooban.FreshBooks</id>
-        <version>0.0.2.2</version>
+        <version>0.0.2.3</version>
         <title>Vooban.FreshBooks</title>
         <authors>Kevin Moore</authors>
         <owners>Vooban</owners>
@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A simple Freshbooks clients for the .NET world with strongly typed items.</description>
         <summary>Freshbooks clients for .NET</summary>
-        <releaseNotes>Added new top level API with Freshbooks API and FreshbooksReports</releaseNotes>
+        <releaseNotes>Removed internal property setter to allow model usage other that for get operation</releaseNotes>
         <copyright>Vooban 2015</copyright>
         <language>en-US</language>
         <tags>Freshbooks</tags>
