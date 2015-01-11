@@ -25,22 +25,22 @@ namespace Vooban.FreshBooks.Task.Models
         /// <summary>
         /// Gets the number of hours worked on this project-task combination for this user
         /// </summary>
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the description attached to the project
         /// </summary>
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether or not this task is billable
         /// </summary>
-        public bool? Billable { get; internal set; }
+        public bool? Billable { get; set; }
 
         /// <summary>
         /// Gets the rate at which people will bill on this project
         /// </summary>
-        public double? Rate { get; internal set; }
+        public double? Rate { get; set; }
 
         #endregion
 

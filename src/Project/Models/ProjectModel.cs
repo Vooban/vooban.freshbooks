@@ -44,12 +44,12 @@ namespace Vooban.FreshBooks.Project.Models
         /// <summary>
         /// Gets the number of hours worked on this project-task combination for this user
         /// </summary>
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets the description attached to the project
         /// </summary>
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the hours on this time entry were billed or not.
@@ -57,22 +57,22 @@ namespace Vooban.FreshBooks.Project.Models
         /// <remarks>
         /// Replace with an enumeration
         /// </remarks>
-        public string BillMethod { get; internal set; }
+        public string BillMethod { get; set; }
 
         /// <summary>
         /// Gets the unique client identifier to which this project belongs.
         /// </summary>
-        public int? ClientId { get; internal set; }
+        public int? ClientId { get; set; }
 
         /// <summary>
         /// Gets the rate at which people will bill on this project
         /// </summary>
-        public double? Rate { get; internal set; }
+        public double? Rate { get; set; }
 
         /// <summary>
         /// Gets the number of hour that can be billed on this project
         /// </summary>
-        public double? HourBudget { get; internal set; }
+        public double? HourBudget { get; set; }
 
         /// <summary>
         /// Gets the task that are attached to this project

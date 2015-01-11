@@ -29,37 +29,37 @@ namespace Vooban.FreshBooks.TimeEntry.Models
         /// <summary>
         /// Gets the staff member's unique identifier to which this time entry is associated
         /// </summary>
-        public int StaffId { get; internal set; }
+        public int StaffId { get; set; }
 
         /// <summary>
         /// Gets the projects's unique identifier to which this time entry is associated
         /// </summary>
-        public int ProjectId { get; internal set; }
+        public int ProjectId { get; set; }
 
         /// <summary>
         /// Gets the task's unique identifier to which this time entry is associated
         /// </summary>
-        public int TaskId { get; internal set; }
+        public int TaskId { get; set; }
 
         /// <summary>
         /// Gets the number of hours worked on this project-task combination for this user
         /// </summary>
-        public double? Hours { get; internal set; }
+        public double? Hours { get; set; }
 
         /// <summary>
         /// Gets the date at which this time entry was create
         /// </summary>
-        public DateTime? Date { get; internal set; }
+        public DateTime? Date { get; set; }
 
         /// <summary>
         /// Gets the notes associated with the time entry
         /// </summary>
-        public string Notes { get; internal set; }
+        public string Notes { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the hours on this time entry were billed or not.
         /// </summary>
-        public bool? Billed { get; internal set; }
+        public bool? Billed { get; set; }
 
         #endregion
 

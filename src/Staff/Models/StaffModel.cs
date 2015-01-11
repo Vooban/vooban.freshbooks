@@ -39,53 +39,53 @@ namespace Vooban.FreshBooks.Staff.Models
         /// <summary>
         /// Gets the username of the staff member, that is the username that is used to connect to Freshbooks.
         /// </summary>
-        public string Username { get; internal set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Gets the first name of the staff member as entered in Freshbooks.
         /// </summary>
-        public string FirstName { get; internal set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Gets the last name of the staff member as entered in Freshbooks.
         /// </summary>
-        public string Lastname { get; internal set; }
+        public string Lastname { get; set; }
 
         /// <summary>
         /// Gets the email address of the staff member as entered in Freshbooks or the address used to perform SSO with Freshbooks
         /// </summary>
-        public string Email { get; internal set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Gets the the staff member's business phone as entered in Freshbooks.
         /// </summary>
-        public string BusinessPhone { get; internal set; }
+        public string BusinessPhone { get; set; }
 
         /// <summary>
         /// Gets the the staff member's mobile phone as entered in Freshbooks.
         /// </summary>
-        public string MobilePhone { get; internal set; }
+        public string MobilePhone { get; set; }
 
         /// <summary>
         /// Gets the the staff member's default rate for project with staff rate configuration
         /// </summary>
         /// <remarks>This value can be null if not specified in Freshbooks.</remarks>
-        public double? Rate { get; internal set; }
+        public double? Rate { get; set; }
 
         /// <summary>
         /// Gets the the staff member's last login date into the Freshbooks application
         /// </summary>
-        public DateTime? LastLogin { get; internal set; }
+        public DateTime? LastLogin { get; set; }
 
         /// <summary>
         /// Gets the the number of time this staff member's logged into the application
         /// </summary>
-        public int? NumberOfLogins { get; internal set; }
+        public int? NumberOfLogins { get; set; }
 
         /// <summary>
         /// Get the date at which this staff member account was created.
         /// </summary>
-        public DateTime? SignupDate { get; internal set; }
+        public DateTime? SignupDate { get; set; }
 
         /// <summary>
         /// Gets the the staff member's home address as configured in Freshbooks
