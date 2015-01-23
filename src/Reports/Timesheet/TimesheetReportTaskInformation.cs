@@ -10,7 +10,7 @@ namespace Vooban.FreshBooks.Reports.Timesheet
         {
             SicknessTaskIds = new List<int>();
             VacationsTaskIds = new List<int>();
-            HollidayTaskIds = new List<int>();
+            HolidayTaskIds = new List<int>();
             BankedTimeTaskIds = new List<int>();
             TrainingTaskIds = new List<int>();
             UnpaidTimeOffTaskIds = new List<int>();
@@ -22,7 +22,7 @@ namespace Vooban.FreshBooks.Reports.Timesheet
 
         public IList<int> VacationsTaskIds { get; set; }
 
-        public IList<int> HollidayTaskIds { get; set; }
+        public IList<int> HolidayTaskIds { get; set; }
 
         public IList<int> TrainingTaskIds { get; set; }
 

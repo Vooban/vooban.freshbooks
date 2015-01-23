@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="FreshBooksApi.cs" />
     <Compile Include="FreshBooksReports.cs" />
+    <Compile Include="LambdaComparer.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReport.cs" />
     <Compile Include="Reports\FreshbooksReportBase.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReportTaskInformation.cs" />

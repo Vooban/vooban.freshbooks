@@ -12,7 +12,7 @@ namespace Vooban.PayEngine.Logic.Tests
     public static class TaskIds
     {
         public const int BANKED = 8976;
-        public const int HOLLIDAY = 5824;
+        public const int HOLIDAY = 5824;
         public const int TRAINING = 9088;
         public const int SICKNESS = 5826;
         public const int UNPAID = 5827;
@@ -29,7 +29,7 @@ namespace Vooban.PayEngine.Logic.Tests
         {
             var taskInformation = new TimesheetReportTaskInformation
             {
-                HollidayTaskIds = new List<int> { TaskIds.HOLLIDAY },
+                HolidayTaskIds = new List<int> { TaskIds.HOLIDAY },
                 VacationsTaskIds = new List<int> { TaskIds.VACATIONS },
                 SicknessTaskIds = new List<int> { TaskIds.SICKNESS },
                 UnpaidTimeOffTaskIds = new List<int> { TaskIds.UNPAID },
@@ -43,7 +43,7 @@ namespace Vooban.PayEngine.Logic.Tests
 
             foreach (var line in result.EmployeeTimeSheets)
             {
-                Debug.WriteLine("{0} {1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11}", line.Employee.FirstName, line.Employee.Lastname, line.TotalTime, line.TotalUnpaidTimeOffTime, line.TotalVacationsTime, line.TotalUnpaidTimeOffTime, line.TotalHollidayTime, line.TotalBankedTime, line.TotalSicknessTime, line.TotalTrainingTime);
+                Debug.WriteLine("{0} {1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11}", line.Employee.FirstName, line.Employee.Lastname, line.TotalTime, line.TotalUnpaidTimeOffTime, line.TotalVacationsTime, line.TotalUnpaidTimeOffTime, line.TotalHolidayTime, line.TotalBankedTime, line.TotalSicknessTime, line.TotalTrainingTime);
             }
         }
     }

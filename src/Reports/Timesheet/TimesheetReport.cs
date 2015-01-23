@@ -34,21 +34,27 @@ namespace Vooban.FreshBooks.Reports.Timesheet
                 {
                     var currentStaffTimeEntries = timeEntriesByStaffMember[currentStaff.Id.Value].ToList();
 
-                    var currentStaffTimeSheetDetails = new RangedTimeSheetDetail {
+                    var details = new RangedTimeSheetDetail {
                         From = from,
                         To = to,
                         Employee = currentStaff,
                         AllTimeEntries=currentStaffTimeEntries,                       
-                        HollidayTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.HollidayTaskIds.Contains(w.TaskId)),
+                        HolidayTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.HolidayTaskIds.Contains(w.TaskId)),
                         SicknessTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.SicknessTaskIds.Contains(w.TaskId)),
                         VacationsTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.VacationsTaskIds.Contains(w.TaskId)),
                         TrainingTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.TrainingTaskIds.Contains(w.TaskId)),
                         BankedTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.BankedTimeTaskIds.Contains(w.TaskId)),
                         UnpaidTimeOffTimeEntries = currentStaffTimeEntries.Where(w => _taskInformations.UnpaidTimeOffTaskIds.Contains(w.TaskId)),
-                        BillableTimeEntries = currentStaffTimeEntries.Where(w => billableTasksId.Contains(w.TaskId))
+                        BillableTimeEntries = currentStaffTimeEntries.Where(w => billableTasksId.Contains(w.TaskId)),
+                        UnbillableTimeEntries = currentStaffTimeEntries.Where(w => !billableTasksId.Contains(w.TaskId))                        
                     };
+
+                    details.UnbillableWorkTimeEntries = details.UnbillableTimeEntries.
+                        Except(details.HolidayTimeEntries, (p, p1) => p.Id == p1.Id).Except(details.SicknessTimeEntries, (p, p1) => p.Id == p1.Id).
+                        Except(details.VacationsTimeEntries, (p, p1) => p.Id == p1.Id).Except(details.TrainingTimeEntries, (p, p1) => p.Id == p1.Id).
+                        Except(details.BankedTimeEntries, (p, p1) => p.Id == p1.Id).Except(details.UnpaidTimeOffTimeEntries, (p, p1) => p.Id == p1.Id);
                     
-                    timesheetDetails.Add(currentStaffTimeSheetDetails);
+                    timesheetDetails.Add(details);
                 }
                 else
                 {

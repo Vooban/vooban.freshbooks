@@ -54,11 +54,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public IEnumerable<TimeEntryModel> AllEmployeesHollidayTimeEntries
+        public IEnumerable<TimeEntryModel> AllEmployeesHolidayTimeEntries
         {
             get
             {
-                return EmployeeTimeSheets.SelectMany(s => s.HollidayTimeEntries);
+                return EmployeeTimeSheets.SelectMany(s => s.HolidayTimeEntries);
             }
         }
 
@@ -118,11 +118,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalHollidayTime
+        public double TotalHolidayTime
         {
             get
             {
-                return EmployeeTimeSheets.Sum(s => s.TotalHollidayTime);
+                return EmployeeTimeSheets.Sum(s => s.TotalHolidayTime);
             }
         }
 

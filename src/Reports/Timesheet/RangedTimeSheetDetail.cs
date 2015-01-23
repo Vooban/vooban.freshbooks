@@ -30,8 +30,8 @@ namespace Vooban.FreshBooks.Reports.Timesheet
         [DebuggerDisplay("Vacations time entries for a total of {TotalVacationsTime} hours")]
         public IEnumerable<TimeEntryModel> VacationsTimeEntries { get; internal set; }
 
-        [DebuggerDisplay("Holliday time entries for a total of {TotalHollidayTime} hours")]
-        public IEnumerable<TimeEntryModel> HollidayTimeEntries { get; internal set; }
+        [DebuggerDisplay("Holiday time entries for a total of {TotalHolidayTime} hours")]
+        public IEnumerable<TimeEntryModel> HolidayTimeEntries { get; internal set; }
 
         [DebuggerDisplay("Banked absence time entries for a total of {TotalBankedTime} hours")]
         public IEnumerable<TimeEntryModel> BankedTimeEntries { get; internal set; }
@@ -41,6 +41,12 @@ namespace Vooban.FreshBooks.Reports.Timesheet
 
         [DebuggerDisplay("Billable time entries for a total of {TotalBillableTime} hours")]
         public IEnumerable<TimeEntryModel> BillableTimeEntries { get; set; }
+
+        [DebuggerDisplay("Unbillable time entries for a total of {TotalUnbillableTime} hours")]
+        public IEnumerable<TimeEntryModel> UnbillableTimeEntries { get; set; }
+
+        [DebuggerDisplay("Unbillable time entries for a total of {TotalUnbillableWorkTime} hours")]
+        public IEnumerable<TimeEntryModel> UnbillableWorkTimeEntries { get; set; }
 
         public double TotalTime
         {
@@ -74,11 +80,11 @@ namespace Vooban.FreshBooks.Reports.Timesheet
             }
         }
 
-        public double TotalHollidayTime
+        public double TotalHolidayTime
         {
             get
             {
-                return HollidayTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
+                return HolidayTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
             }
         }
 
@@ -105,6 +111,22 @@ namespace Vooban.FreshBooks.Reports.Timesheet
                 return BillableTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
             }
         }
+
+        public double TotalUnbillableTime
+        {
+            get
+            {
+                return UnbillableTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
+            }
+        }
+
+        public double TotalUnbillableWorkTime
+        {
+            get
+            {
+                return UnbillableWorkTimeEntries.Where(s => s.Hours.HasValue).Sum(s => s.Hours.Value);
+            }
+        }   
     }
 
 }
