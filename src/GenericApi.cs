@@ -78,7 +78,7 @@ namespace Vooban.FreshBooks
         /// The max number of items per page supported by Freshbooks is 100.;itemPerPage
         /// </exception>
         public FreshbooksPagedResponse<T> GetList(int page = 1, int itemPerPage = 100)
-      {
+       {
             if (!string.IsNullOrEmpty(_options.ListCommand))
                 return CallGetListMethod(_options.ListCommand, r => _options.BuildEnumerableFromDynamicResult(r), null, page, itemPerPage);
 

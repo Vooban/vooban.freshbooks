@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vooban.FreshBooks.Models;
 using Vooban.FreshBooks.Staff.Models;
 
@@ -192,6 +193,62 @@ namespace Vooban.FreshBooks.Staff
         public IEnumerable<StaffModel> GetAllPages()
         {
             return _api.GetAllPages();
+        }
+
+        #endregion
+
+        #region ISearchable
+
+        /// <summary>
+        /// Call the api.list method on the Freshbooks API to perform a search
+        /// </summary>
+        /// <param name="template">The template used to query the time entry API.</param>
+        /// <param name="page">The page you want to get.</param>
+        /// <param name="itemPerPage">The number of item per page to get.</param>
+        /// <returns>
+        /// The whole <see cref="FreshbooksPagedResponse{T}" /> containing paging information and result for the requested page.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
+        /// or
+        /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
+        public FreshbooksPagedResponse<StaffModel> Search(StaffFilter template, int page = 1, int itemPerPage = 100)
+        {
+            // TODO : Implement real search with generic API when freshbooks decides to support template for list of staff, which is not supported as of 2015-08-03
+            var searchResult =  _api.GetAllPages();
+
+            if (template != null)
+            {
+                if (!string.IsNullOrEmpty(template.Email))
+                {
+                    searchResult = searchResult.Where(w => w.Email == template.Email);
+                }
+
+                if (!string.IsNullOrEmpty((template.FreshbookId)))
+                {
+                    searchResult = searchResult.Where(w => w.Id == int.Parse(template.FreshbookId));
+                }
+            }
+
+            var searchResultList = searchResult.ToList();
+
+            return new FreshbooksPagedResponse<StaffModel>() { ItemsPerPage = itemPerPage, Page = page, TotalItems = searchResultList.Count(), TotalPages = searchResultList.Count() / itemPerPage, Status = "success", Error = null }.WithResult(searchResultList.Skip((page-1) * itemPerPage).Take(itemPerPage));
+        }
+
+        /// <summary>
+        /// Call the api.list method on the Freshbooks API.
+        /// </summary>
+        /// <param name="template">The template used to query the time entry API.</param>
+        /// <param name="page">The page you want to get.</param>
+        /// <param name="itemPerPage">The number of item per page to get.</param>
+        /// <returns>
+        /// The whole <see cref="FreshbooksPagedResponse{T}" /> containing paging information and result for the requested page.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Please ask for at least 1 item per page otherwise this call is irrelevant.;itemPerPage
+        /// or
+        /// The max number of items per page supported by Freshbooks is 100.;itemPerPage</exception>
+        public IEnumerable<StaffModel> SearchAll(StaffFilter template, int page = 1, int itemPerPage = 100)
+        {
+            return Search(template, page, itemPerPage).Result;
         }
 
         #endregion

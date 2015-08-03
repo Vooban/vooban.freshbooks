@@ -56,6 +56,22 @@ namespace Vooban.FreshBooks.Tests.Staff
             }
         }
 
+        public class CallSearch
+        {
+            [Fact]
+            public void WorksAsExpected()
+            {
+                var freshbooks = new Lazy<HastyAPI.FreshBooks.FreshBooks>(() => new HastyAPI.FreshBooks.FreshBooks(_username, _token));
+
+                var testedClass = new StaffApi(freshbooks);
+
+                var result = testedClass.SearchAll(new StaffFilter() { Email = "kevin.moore@vooban.com"});
+                Assert.NotNull(result);
+
+                Console.Write(JsonConvert.SerializeObject(result));
+            }
+        }
+
         public class CallGetAllPages
         {
             [Fact]

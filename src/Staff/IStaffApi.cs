@@ -2,7 +2,7 @@
 
 namespace Vooban.FreshBooks.Staff
 {
-    public interface IStaffApi : IReadOnlyBasicApi<StaffModel>
+    public interface IStaffApi : IReadOnlyBasicApi<StaffModel>, ISearchableBasicApi<StaffModel, StaffFilter>
     {
         /// <summary>
         /// Call the <c>staff.current</c> method on the Freshbooks API.
