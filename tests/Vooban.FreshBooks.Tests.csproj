@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Invoices\InvoiceApiTests.cs" />
     <Compile Include="Project\ProjectApiTests.cs" />
     <Compile Include="FreshbooksConvertTests.cs" />
     <Compile Include="Reports\Timesheet\TimesheetReportTests.cs" />
